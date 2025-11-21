@@ -356,6 +356,8 @@
 
                 if (activeSection === 'pricing') {
                     const tableStyle = { width: '100%', borderCollapse: 'collapse', marginBottom: '40px' };
+                    const tableWrapper = { overflowX: 'auto', marginBottom: '20px' };
+                    const responsiveTable = { ...tableStyle, minWidth: '600px' };
                     const thStyle = { padding: '15px', borderBottom: '2px solid #000', textAlign: 'left', fontWeight: 600 };
                     const tdStyle = { padding: '12px 15px', borderBottom: '1px solid #f0f0f0' };
                     const sectionTitle = { fontSize: '24px', fontWeight: 500, marginBottom: '20px', marginTop: '40px' };
@@ -364,7 +366,8 @@
                         React.createElement('h2', { style: styles.h2 }, 'Membership & Pricing'),
                         
                         React.createElement('h3', { style: sectionTitle }, 'Monthly Memberships'),
-                        React.createElement('table', { style: tableStyle },
+                        React.createElement('div', { style: tableWrapper },
+                            React.createElement('table', { style: responsiveTable },
                             React.createElement('thead', null,
                                 React.createElement('tr', null,
                                     React.createElement('th', { style: thStyle }, 'Membership Type'),
@@ -393,10 +396,11 @@
                                     React.createElement('td', { style: tdStyle }, 'Best value for total body wellness')
                                 )
                             )
-                        ),
+                        )),
 
                         React.createElement('h3', { style: sectionTitle }, 'Session Bundles'),
-                        React.createElement('table', { style: tableStyle },
+                        React.createElement('div', { style: tableWrapper },
+                            React.createElement('table', { style: responsiveTable },
                             React.createElement('thead', null,
                                 React.createElement('tr', null,
                                     React.createElement('th', { style: thStyle }, 'Bundle Type'),
@@ -431,10 +435,11 @@
                                     React.createElement('td', { style: tdStyle }, 'Excellent for committed clients')
                                 )
                             )
-                        ),
+                        )),
 
                         React.createElement('h3', { style: sectionTitle }, 'Private & Semi-Private Sessions'),
-                        React.createElement('table', { style: tableStyle },
+                        React.createElement('div', { style: tableWrapper },
+                            React.createElement('table', { style: responsiveTable },
                             React.createElement('thead', null,
                                 React.createElement('tr', null,
                                     React.createElement('th', { style: thStyle }, 'Session Type'),
@@ -469,10 +474,11 @@
                                     React.createElement('td', { style: tdStyle }, 'Save KSh 5,000 – best value')
                                 )
                             )
-                        ),
+                        )),
 
                         React.createElement('h3', { style: sectionTitle }, 'Drop-In Classes'),
-                        React.createElement('table', { style: tableStyle },
+                        React.createElement('div', { style: tableWrapper },
+                            React.createElement('table', { style: responsiveTable },
                             React.createElement('thead', null,
                                 React.createElement('tr', null,
                                     React.createElement('th', { style: thStyle }, 'Class Type'),
@@ -497,10 +503,11 @@
                                     React.createElement('td', { style: tdStyle }, 'Max 15 clients')
                                 )
                             )
-                        ),
+                        )),
 
                         React.createElement('h3', { style: sectionTitle }, 'Equipment & Essentials'),
-                        React.createElement('table', { style: tableStyle },
+                        React.createElement('div', { style: tableWrapper },
+                            React.createElement('table', { style: responsiveTable },
                             React.createElement('thead', null,
                                 React.createElement('tr', null,
                                     React.createElement('th', { style: thStyle }, 'Item'),
@@ -520,7 +527,7 @@
                                     React.createElement('td', { style: tdStyle }, 'Required for reformer Pilates for safety; available for purchase')
                                 )
                             )
-                        )
+                        ))
                     );
                 }
 
