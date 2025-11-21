@@ -1,0 +1,313 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #000;
+  background: #fff;
+  line-height: 1.6;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.nav-brand {
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s;
+  text-transform: capitalize;
+  font-family: inherit;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #000;
+}
+
+.section {
+  min-height: 100vh;
+  padding-top: 80px;
+}
+
+.section-home {
+  padding-top: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  font-weight: 300;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.hero-content p {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 40px;
+}
+
+.cta-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 16px 32px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+
+.cta-btn:hover {
+  background: #333;
+}
+
+.hero-image,
+.image-placeholder {
+  aspect-ratio: 4/5;
+  background: #f8f8f8;
+  border: 1px solid #f0f0f0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.class-card {
+  text-align: center;
+}
+
+.class-image {
+  aspect-ratio: 4/3;
+  background: #f8f8f8;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.class-card h3 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.class-card p {
+  color: #666;
+  font-size: 14px;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-top: 40px;
+}
+
+.about-text h3 {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.trainer-grid {
+  display: grid;
+  gap: 40px;
+}
+
+.trainer {
+  text-align: center;
+}
+
+.trainer-image {
+  width: 120px;
+  height: 120px;
+  background: #f8f8f8;
+  border: 1px solid #f0f0f0;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+}
+
+.trainer h4 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.trainer p {
+  color: #666;
+  font-size: 14px;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.price-card {
+  text-align: center;
+  padding: 40px 20px;
+  border: 1px solid #f0f0f0;
+  transition: border-color 0.2s;
+}
+
+.price-card.featured {
+  border-color: #000;
+}
+
+.price-card h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.price {
+  font-size: 36px;
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+
+.price-card p {
+  color: #666;
+  font-size: 14px;
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-top: 40px;
+}
+
+.contact-info h3,
+.contact-info h4 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.contact-info h4 {
+  margin-top: 30px;
+}
+
+.contact-info p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 16px;
+  border: 1px solid #f0f0f0;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #000;
+}
+
+h2 {
+  font-size: 32px;
+  font-weight: 300;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    padding: 15px 20px;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .nav-links {
+    gap: 20px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  .hero-content h1 {
+    font-size: 36px;
+  }
+
+  .container {
+    padding: 40px 20px;
+  }
+
+  .about-content,
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

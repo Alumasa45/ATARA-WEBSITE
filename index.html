@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atara Studios</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const App = () => {
+            const [activeSection, setActiveSection] = useState('home');
+            const [currentBgIndex, setCurrentBgIndex] = useState(0);
+            const [expandedCard, setExpandedCard] = useState(null);
+            
+            const backgroundImages = [
+                'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=1080&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1506629905607-d405d7d3b880?w=1920&h=1080&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1547153760-18fc86324498?w=1920&h=1080&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=1920&h=1080&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1920&h=1080&fit=crop&crop=center'
+            ];
+            
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setCurrentBgIndex(prev => (prev + 1) % backgroundImages.length);
+                }, 4000);
+                return () => clearInterval(interval);
+            }, []);
+
+            const styles = {
+                app: { 
+                    minHeight: '100vh', 
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', 
+                    margin: 0, 
+                    padding: 0,
+                    position: 'relative',
+                    overflow: 'hidden'
+                },
+                backgroundSlider: {
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: -1
+                },
+                backgroundImage: {
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    transition: 'opacity 1s ease-in-out'
+                },
+                overlay: {
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    background: 'rgba(255, 255, 255, 0.85)',
+                    zIndex: 1
+                },
+                nav: { position: 'fixed', top: 0, width: '100%', background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(240, 240, 240, 0.5)', padding: '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100, boxSizing: 'border-box' },
+                navBrand: { fontWeight: 600, fontSize: '18px', letterSpacing: '2px' },
+                navLinks: { display: 'flex', gap: '40px' },
+                navLink: { background: 'none', border: 'none', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit', textTransform: 'capitalize' },
+                section: { minHeight: '100vh', paddingTop: '80px', position: 'relative', zIndex: 2 },
+                sectionHome: { paddingTop: 0, paddingBottom: '60px' },
+                container: { maxWidth: '1200px', margin: '0 auto', padding: '60px 40px', background: 'rgba(255, 255, 255, 0.9)', borderRadius: '20px', backdropFilter: 'blur(10px)' },
+                hero: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center', minHeight: '100vh', padding: '0 40px', maxWidth: '1200px', margin: '0 auto' },
+                heroH1: { fontSize: '48px', fontWeight: 300, marginBottom: '20px', lineHeight: 1.2, margin: '0 0 20px 0' },
+                heroP: { fontSize: '18px', color: '#666', marginBottom: '40px', margin: '0 0 40px 0' },
+                ctaBtn: { background: '#000', color: '#fff', border: 'none', padding: '16px 32px', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit' },
+                imagePlaceholder: { aspectRatio: '4/5', background: '#f8f8f8', border: '1px solid #f0f0f0' },
+                grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '40px', marginTop: '60px' },
+                classCard: { textAlign: 'center', borderRadius: '15px', overflow: 'hidden', background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.2)' },
+                classImage: { aspectRatio: '4/3', background: '#f8f8f8', border: '1px solid #f0f0f0', marginBottom: '20px', borderRadius: '10px' },
+                h2: { fontSize: '32px', fontWeight: 300, textAlign: 'center', margin: 0 },
+                h3: { fontSize: '20px', fontWeight: 500, marginBottom: '10px', margin: '0 0 10px 0' },
+                cardP: { color: '#666', fontSize: '14px', margin: 0 }
+            };
+
+            const renderContent = () => {
+                if (activeSection === 'home') {
+                    return React.createElement('div', null,
+                        React.createElement('div', { style: styles.hero },
+                            React.createElement('div', null,
+                                React.createElement('h1', { style: styles.heroH1 }, 'Movement. Strength. Balance.'),
+                                React.createElement('p', { style: styles.heroP }, 'Premium Pilates, Dance & Strength Training'),
+                                React.createElement('button', { 
+                                    style: styles.ctaBtn, 
+                                    onClick: () => setActiveSection('contact') 
+                                }, 'Book a Class')
+                            ),
+                            React.createElement('img', { 
+                                src: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&h=600&fit=crop&crop=center',
+                                alt: 'Pilates Studio',
+                                style: { ...styles.imagePlaceholder, width: '100%', height: 'auto', objectFit: 'cover' }
+                            })
+                        ),
+                        React.createElement('div', { style: { ...styles.container, marginTop: '60px' } },
+                            React.createElement('div', { style: { textAlign: 'center', marginBottom: '60px' } },
+                                React.createElement('h2', { style: { fontSize: '28px', fontWeight: 300, marginBottom: '20px', margin: '0 0 20px 0' } }, 'Why Choose Atara Studios?'),
+                                React.createElement('p', { style: { fontSize: '16px', color: '#666', maxWidth: '600px', margin: '0 auto' } }, 'Experience transformative wellness through our expertly designed programs that blend traditional techniques with modern innovation.')
+                            ),
+                            React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '40px' } },
+                                React.createElement('div', { style: { textAlign: 'center', padding: '30px 20px' } },
+                                    React.createElement('svg', { width: 48, height: 48, viewBox: '0 0 24 24', fill: 'none', stroke: '#666', strokeWidth: 2, style: { marginBottom: '15px' } },
+                                        React.createElement('path', { d: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2' }),
+                                        React.createElement('circle', { cx: 9, cy: 7, r: 4 }),
+                                        React.createElement('path', { d: 'M22 21v-2a4 4 0 0 0-3-3.87' }),
+                                        React.createElement('path', { d: 'M16 3.13a4 4 0 0 1 0 7.75' })
+                                    ),
+                                    React.createElement('h3', { style: { fontSize: '18px', fontWeight: 500, marginBottom: '10px', margin: '0 0 10px 0' } }, 'Expert Instructors'),
+                                    React.createElement('p', { style: { color: '#666', fontSize: '14px', margin: 0 } }, 'Certified professionals with years of experience')
+                                ),
+                                React.createElement('div', { style: { textAlign: 'center', padding: '30px 20px' } },
+                                    React.createElement('svg', { width: 48, height: 48, viewBox: '0 0 24 24', fill: 'none', stroke: '#666', strokeWidth: 2, style: { marginBottom: '15px' } },
+                                        React.createElement('path', { d: 'M14.4 14.4 9.6 9.6' }),
+                                        React.createElement('path', { d: 'M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z' }),
+                                        React.createElement('path', { d: 'M21.5 21.5l-1.4-1.4' }),
+                                        React.createElement('path', { d: 'M3.9 3.9 2.5 2.5' }),
+                                        React.createElement('path', { d: 'M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829z' })
+                                    ),
+                                    React.createElement('h3', { style: { fontSize: '18px', fontWeight: 500, marginBottom: '10px', margin: '0 0 10px 0' } }, 'Premium Equipment'),
+                                    React.createElement('p', { style: { color: '#666', fontSize: '14px', margin: 0 } }, 'State-of-the-art Reformers and fitness tools')
+                                ),
+                                React.createElement('div', { style: { textAlign: 'center', padding: '30px 20px' } },
+                                    React.createElement('svg', { width: 48, height: 48, viewBox: '0 0 24 24', fill: 'none', stroke: '#666', strokeWidth: 2, style: { marginBottom: '15px' } },
+                                        React.createElement('circle', { cx: 12, cy: 12, r: 10 }),
+                                        React.createElement('circle', { cx: 12, cy: 12, r: 6 }),
+                                        React.createElement('circle', { cx: 12, cy: 12, r: 2 })
+                                    ),
+                                    React.createElement('h3', { style: { fontSize: '18px', fontWeight: 500, marginBottom: '10px', margin: '0 0 10px 0' } }, 'Personalized Approach'),
+                                    React.createElement('p', { style: { color: '#666', fontSize: '14px', margin: 0 } }, 'Tailored programs for every fitness level')
+                                )
+                            )
+                        ),
+                        React.createElement('div', { style: { ...styles.container, marginTop: '40px', textAlign: 'center' } },
+                            React.createElement('h2', { style: { fontSize: '24px', fontWeight: 300, marginBottom: '30px', margin: '0 0 30px 0' } }, 'Ready to Transform Your Body & Mind?'),
+                            React.createElement('div', { style: { display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' } },
+                                React.createElement('button', { 
+                                    style: { ...styles.ctaBtn, padding: '18px 36px' },
+                                    onClick: () => setActiveSection('classes')
+                                }, 'Explore Classes'),
+                                React.createElement('button', { 
+                                    style: { ...styles.ctaBtn, background: 'transparent', color: '#000', border: '1px solid #000' },
+                                    onClick: () => setActiveSection('pricing')
+                                }, 'View Pricing')
+                            )
+                        )
+                    );
+                }
+
+                if (activeSection === 'classes') {
+                    const classes = [
+                        { 
+                            name: 'Pilates Reformer', 
+                            desc: 'Dynamic full-body workout using specialized equipment', 
+                            img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center',
+                            details: 'Experience the ultimate Pilates workout with our state-of-the-art Reformer machines. This low-impact, full-body exercise improves flexibility, builds strength, and develops control and endurance. Perfect for all fitness levels.',
+                            duration: '50 minutes',
+                            level: 'All Levels',
+                            benefits: ['Core Strength', 'Flexibility', 'Posture', 'Balance']
+                        },
+                        { 
+                            name: 'Yoga', 
+                            desc: 'Mindful movement combining breath, flexibility and strength', 
+                            img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop&crop=center',
+                            details: 'Flow through sequences that unite breath and movement, building flexibility, strength, and inner calm. Our yoga classes blend traditional poses with modern techniques for a transformative practice.',
+                            duration: '60 minutes',
+                            level: 'All Levels',
+                            benefits: ['Flexibility', 'Stress Relief', 'Balance', 'Mindfulness']
+                        },
+                        { 
+                            name: 'Dance', 
+                            desc: 'Expressive movement combining technique and creativity', 
+                            img: 'https://images.unsplash.com/photo-1547153760-18fc86324498?w=400&h=300&fit=crop&crop=center',
+                            details: 'Unleash your creativity through expressive dance movements. Our classes blend contemporary, jazz, and modern techniques to create a fun, energetic workout that improves coordination and artistic expression.',
+                            duration: '60 minutes',
+                            level: 'All Levels',
+                            benefits: ['Creativity', 'Cardio', 'Coordination', 'Confidence']
+                        },
+                        { 
+                            name: 'Strength Training', 
+                            desc: 'Functional fitness for everyday movement and power', 
+                            img: 'https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400&h=300&fit=crop&crop=center',
+                            details: 'Build functional strength with our comprehensive strength training program. Using a variety of equipment and bodyweight exercises, develop power, endurance, and muscle definition for real-world applications.',
+                            duration: '55 minutes',
+                            level: 'Intermediate to Advanced',
+                            benefits: ['Muscle Building', 'Functional Power', 'Metabolism', 'Bone Health']
+                        }
+                    ];
+
+                    return React.createElement('div', null,
+                        expandedCard && React.createElement('div', { 
+                            style: { 
+                                position: 'fixed', 
+                                top: 0, 
+                                left: 0, 
+                                width: '100%', 
+                                height: '100%', 
+                                background: 'rgba(0, 0, 0, 0.5)', 
+                                backdropFilter: 'blur(10px)', 
+                                zIndex: 200, 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                padding: '20px'
+                            },
+                            onClick: () => setExpandedCard(null)
+                        },
+                            React.createElement('div', { 
+                                style: { 
+                                    background: 'rgba(255, 255, 255, 0.95)', 
+                                    backdropFilter: 'blur(20px)', 
+                                    borderRadius: '20px', 
+                                    padding: '40px', 
+                                    maxWidth: '600px', 
+                                    width: '100%',
+                                    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
+                                    border: '1px solid rgba(255, 255, 255, 0.2)'
+                                },
+                                onClick: e => e.stopPropagation()
+                            },
+                                React.createElement('img', { 
+                                    src: expandedCard?.img, 
+                                    alt: expandedCard?.name,
+                                    style: { width: '100%', height: '200px', objectFit: 'cover', borderRadius: '10px', marginBottom: '20px' }
+                                }),
+                                React.createElement('h2', { style: { fontSize: '28px', fontWeight: 500, marginBottom: '15px', margin: '0 0 15px 0' } }, expandedCard?.name),
+                                React.createElement('p', { style: { fontSize: '16px', color: '#666', marginBottom: '20px', lineHeight: 1.6, margin: '0 0 20px 0' } }, expandedCard?.details),
+                                React.createElement('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' } },
+                                    React.createElement('div', null,
+                                        React.createElement('h4', { style: { fontSize: '14px', fontWeight: 600, marginBottom: '5px', color: '#333', margin: '0 0 5px 0' } }, 'Duration'),
+                                        React.createElement('p', { style: { fontSize: '14px', color: '#666', margin: 0 } }, expandedCard?.duration)
+                                    ),
+                                    React.createElement('div', null,
+                                        React.createElement('h4', { style: { fontSize: '14px', fontWeight: 600, marginBottom: '5px', color: '#333', margin: '0 0 5px 0' } }, 'Level'),
+                                        React.createElement('p', { style: { fontSize: '14px', color: '#666', margin: 0 } }, expandedCard?.level)
+                                    )
+                                ),
+                                React.createElement('div', null,
+                                    React.createElement('h4', { style: { fontSize: '14px', fontWeight: 600, marginBottom: '10px', color: '#333', margin: '0 0 10px 0' } }, 'Key Benefits'),
+                                    React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' } },
+                                        ...expandedCard?.benefits.map(benefit => 
+                                            React.createElement('span', { 
+                                                key: benefit,
+                                                style: { 
+                                                    background: 'rgba(0, 0, 0, 0.1)', 
+                                                    padding: '4px 12px', 
+                                                    borderRadius: '20px', 
+                                                    fontSize: '12px', 
+                                                    color: '#333' 
+                                                }
+                                            }, benefit)
+                                        )
+                                    )
+                                ),
+                                React.createElement('button', { 
+                                    style: { ...styles.ctaBtn, width: '100%' },
+                                    onClick: () => setActiveSection('contact')
+                                }, 'Book This Class')
+                            )
+                        ),
+                        React.createElement('div', { style: styles.container },
+                            React.createElement('h2', { style: styles.h2 }, 'Classes'),
+                            React.createElement('div', { style: styles.grid },
+                                ...classes.map(cls => 
+                                    React.createElement('div', { 
+                                        key: cls.name, 
+                                        style: { 
+                                            ...styles.classCard, 
+                                            cursor: 'pointer',
+                                            transition: 'transform 0.2s, box-shadow 0.2s',
+                                            ':hover': { transform: 'translateY(-5px)' }
+                                        },
+                                        onClick: () => setExpandedCard(cls)
+                                    },
+                                        React.createElement('img', { 
+                                            src: cls.img, 
+                                            alt: cls.name,
+                                            style: { ...styles.classImage, width: '100%', height: 'auto', objectFit: 'cover', borderRadius: '10px', marginBottom: '15px' }
+                                        }),
+                                        React.createElement('h3', { style: styles.h3 }, cls.name),
+                                        React.createElement('p', { style: styles.cardP }, cls.desc),
+                                        React.createElement('div', { style: { marginTop: '15px', fontSize: '12px', color: '#999' } }, 'Click to learn more')
+                                    )
+                                )
+                            )
+                        )
+                    );
+                }
+
+                if (activeSection === 'about') {
+                    return React.createElement('div', { style: styles.container },
+                        React.createElement('h2', { style: styles.h2 }, 'About'),
+                        React.createElement('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', marginTop: '40px' } },
+                            React.createElement('div', null,
+                                React.createElement('h3', { style: { fontSize: '24px', fontWeight: 500, marginBottom: '20px', margin: '0 0 20px 0' } }, 'Our Philosophy'),
+                                React.createElement('p', { style: { margin: '0 0 40px 0' } }, 'At Atara Studios, we believe movement is medicine. Our carefully curated classes blend traditional techniques with modern approaches to create transformative experiences for body and mind.'),
+                                React.createElement('div', { style: { display: 'flex', alignItems: 'center', margin: '40px 0 30px 0' } },
+                                    React.createElement('div', { style: { flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, #ddd, transparent)' } }),
+                                    React.createElement('div', { style: { padding: '0 20px', fontSize: '24px', color: '#ddd' } }, '✦'),
+                                    React.createElement('div', { style: { flex: 1, height: '1px', background: 'linear-gradient(to left, transparent, #ddd, transparent)' } })
+                                ),
+                                React.createElement('h4', { style: { fontSize: '18px', fontWeight: 500, marginBottom: '20px', margin: '0 0 20px 0' } }, 'Our Gallery'),
+                                React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px' } },
+                                    React.createElement('img', { src: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop', alt: 'Atara Studio Interior', style: { width: '100%', height: '200px', objectFit: 'cover', borderRadius: '12px' } }),
+                                    React.createElement('img', { src: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=250&fit=crop', alt: 'Reformer Class in Session', style: { width: '100%', height: '200px', objectFit: 'cover', borderRadius: '12px' } }),
+                                    React.createElement('img', { src: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400&h=250&fit=crop', alt: 'Yoga Session', style: { width: '100%', height: '200px', objectFit: 'cover', borderRadius: '12px' } }),
+                                    React.createElement('img', { src: 'https://images.unsplash.com/photo-1547153760-18fc86324498?w=400&h=250&fit=crop', alt: 'Dance Class', style: { width: '100%', height: '200px', objectFit: 'cover', borderRadius: '12px' } })
+                                )
+                            ),
+                            React.createElement('div', { style: { display: 'grid', gap: '40px' } },
+                                React.createElement('div', { style: { textAlign: 'center' } },
+                                    React.createElement('img', { src: 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=120&h=120&fit=crop&crop=face', alt: 'Melody', style: { width: '120px', height: '120px', borderRadius: '50%', margin: '0 auto 15px', objectFit: 'cover' } }),
+                                    React.createElement('h4', { style: { fontSize: '16px', fontWeight: 500, marginBottom: '5px', margin: '0 0 5px 0' } }, 'Melody'),
+                                    React.createElement('p', { style: { color: '#666', fontSize: '14px', margin: 0 } }, 'Lead Pilates & Yoga Instructor')
+                                ),
+                                React.createElement('div', { style: { textAlign: 'center' } },
+                                    React.createElement('img', { src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face', alt: 'Victryn', style: { width: '120px', height: '120px', borderRadius: '50%', margin: '0 auto 15px', objectFit: 'cover' } }),
+                                    React.createElement('h4', { style: { fontSize: '16px', fontWeight: 500, marginBottom: '5px', margin: '0 0 5px 0' } }, 'Victryn'),
+                                    React.createElement('p', { style: { color: '#666', fontSize: '14px', margin: 0 } }, 'Intro Pilates sessions')
+                                ),
+                                React.createElement('div', { style: { textAlign: 'center' } },
+                                    React.createElement('img', { src: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&h=120&fit=crop&crop=face', alt: 'Pedro', style: { width: '120px', height: '120px', borderRadius: '50%', margin: '0 auto 15px', objectFit: 'cover' } }),
+                                    React.createElement('h4', { style: { fontSize: '16px', fontWeight: 500, marginBottom: '5px', margin: '0 0 5px 0' } }, 'Pedro'),
+                                    React.createElement('p', { style: { color: '#666', fontSize: '14px', margin: 0 } }, 'Dance Trainer')
+                                ),
+                                React.createElement('div', { style: { textAlign: 'center' } },
+                                    React.createElement('img', { src: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&crop=face', alt: 'Flex', style: { width: '120px', height: '120px', borderRadius: '50%', margin: '0 auto 15px', objectFit: 'cover' } }),
+                                    React.createElement('h4', { style: { fontSize: '16px', fontWeight: 500, marginBottom: '5px', margin: '0 0 5px 0' } }, 'Flex'),
+                                    React.createElement('p', { style: { color: '#666', fontSize: '14px', margin: 0 } }, 'Dance trainer')
+                                ),
+                                React.createElement('div', { style: { textAlign: 'center' } },
+                                    React.createElement('img', { src: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=face', alt: 'Joy', style: { width: '120px', height: '120px', borderRadius: '50%', margin: '0 auto 15px', objectFit: 'cover' } }),
+                                    React.createElement('h4', { style: { fontSize: '16px', fontWeight: 500, marginBottom: '5px', margin: '0 0 5px 0' } }, 'Joy'),
+                                    React.createElement('p', { style: { color: '#666', fontSize: '14px', margin: 0 } }, 'Dance Trainer')
+                                )
+                            )
+                        )
+                    );
+                }
+
+                if (activeSection === 'pricing') {
+                    const tableStyle = { width: '100%', borderCollapse: 'collapse', marginBottom: '40px' };
+                    const thStyle = { padding: '15px', borderBottom: '2px solid #000', textAlign: 'left', fontWeight: 600 };
+                    const tdStyle = { padding: '12px 15px', borderBottom: '1px solid #f0f0f0' };
+                    const sectionTitle = { fontSize: '24px', fontWeight: 500, marginBottom: '20px', marginTop: '40px' };
+
+                    return React.createElement('div', { style: styles.container },
+                        React.createElement('h2', { style: styles.h2 }, 'Membership & Pricing'),
+                        
+                        React.createElement('h3', { style: sectionTitle }, 'Monthly Memberships'),
+                        React.createElement('table', { style: tableStyle },
+                            React.createElement('thead', null,
+                                React.createElement('tr', null,
+                                    React.createElement('th', { style: thStyle }, 'Membership Type'),
+                                    React.createElement('th', { style: thStyle }, 'Regular Rate'),
+                                    React.createElement('th', { style: thStyle }, 'Launch Rate'),
+                                    React.createElement('th', { style: thStyle }, 'Description')
+                                )
+                            ),
+                            React.createElement('tbody', null,
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, 'Mat Membership – Starter (4 Classes/Month)'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 8,000'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 7,000'),
+                                    React.createElement('td', { style: tdStyle }, 'Perfect for beginners or busy schedules')
+                                ),
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, 'Reformer Membership – Starter (4 Classes/Month)'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 10,000'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 9,000'),
+                                    React.createElement('td', { style: tdStyle }, 'Ideal for new clients exploring reformer Pilates')
+                                ),
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, 'Hybrid Membership (5 reformer + 5 mat classes)'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 20,000'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 19,000'),
+                                    React.createElement('td', { style: tdStyle }, 'Best value for total body wellness')
+                                )
+                            )
+                        ),
+
+                        React.createElement('h3', { style: sectionTitle }, 'Session Bundles'),
+                        React.createElement('table', { style: tableStyle },
+                            React.createElement('thead', null,
+                                React.createElement('tr', null,
+                                    React.createElement('th', { style: thStyle }, 'Bundle Type'),
+                                    React.createElement('th', { style: thStyle }, 'Regular Rate'),
+                                    React.createElement('th', { style: thStyle }, 'Launch Offer'),
+                                    React.createElement('th', { style: thStyle }, 'Description')
+                                )
+                            ),
+                            React.createElement('tbody', null,
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, 'Walk-in (Per Session)'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 2,500'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 2,000'),
+                                    React.createElement('td', { style: tdStyle }, 'Try a single reformer session')
+                                ),
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, '4-Session Bundle'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 10,000'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 8,000'),
+                                    React.createElement('td', { style: tdStyle }, 'Great way to start reformer training')
+                                ),
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, '10-Session Bundle'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 25,000'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 20,000'),
+                                    React.createElement('td', { style: tdStyle }, 'Best for consistent practice')
+                                ),
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, '15-Session Bundle'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 37,500'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 30,000'),
+                                    React.createElement('td', { style: tdStyle }, 'Excellent for committed clients')
+                                )
+                            )
+                        ),
+
+                        React.createElement('h3', { style: sectionTitle }, 'Private & Semi-Private Sessions'),
+                        React.createElement('table', { style: tableStyle },
+                            React.createElement('thead', null,
+                                React.createElement('tr', null,
+                                    React.createElement('th', { style: thStyle }, 'Session Type'),
+                                    React.createElement('th', { style: thStyle }, 'Duration'),
+                                    React.createElement('th', { style: thStyle }, 'Rate'),
+                                    React.createElement('th', { style: thStyle }, 'Details')
+                                )
+                            ),
+                            React.createElement('tbody', null,
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, 'Private Session'),
+                                    React.createElement('td', { style: tdStyle }, '55 minutes'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 4,500'),
+                                    React.createElement('td', { style: tdStyle }, 'Personalized one-on-one session')
+                                ),
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, 'Duet Session (2 People)'),
+                                    React.createElement('td', { style: tdStyle }, '55 minutes'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 9,000'),
+                                    React.createElement('td', { style: tdStyle }, 'Train with a friend')
+                                ),
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, 'Private Session Package (5 Sessions)'),
+                                    React.createElement('td', { style: tdStyle }, '55 minutes each'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 20,000'),
+                                    React.createElement('td', { style: tdStyle }, 'Save KSh 2,500')
+                                ),
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, 'Private Session Package (10 Sessions)'),
+                                    React.createElement('td', { style: tdStyle }, '55 minutes each'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 40,000'),
+                                    React.createElement('td', { style: tdStyle }, 'Save KSh 5,000 – best value')
+                                )
+                            )
+                        ),
+
+                        React.createElement('h3', { style: sectionTitle }, 'Drop-In Classes'),
+                        React.createElement('table', { style: tableStyle },
+                            React.createElement('thead', null,
+                                React.createElement('tr', null,
+                                    React.createElement('th', { style: thStyle }, 'Class Type'),
+                                    React.createElement('th', { style: thStyle }, 'Rate'),
+                                    React.createElement('th', { style: thStyle }, 'Notes')
+                                )
+                            ),
+                            React.createElement('tbody', null,
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, 'Yoga'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 2,000'),
+                                    React.createElement('td', { style: tdStyle }, 'Pay per class')
+                                ),
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, 'Reformer Class Drop-in'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 3,000'),
+                                    React.createElement('td', { style: tdStyle }, 'Small group session (max 5 clients)')
+                                ),
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, 'Dance'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 1,500'),
+                                    React.createElement('td', { style: tdStyle }, 'Max 15 clients')
+                                )
+                            )
+                        ),
+
+                        React.createElement('h3', { style: sectionTitle }, 'Equipment & Essentials'),
+                        React.createElement('table', { style: tableStyle },
+                            React.createElement('thead', null,
+                                React.createElement('tr', null,
+                                    React.createElement('th', { style: thStyle }, 'Item'),
+                                    React.createElement('th', { style: thStyle }, 'Fee'),
+                                    React.createElement('th', { style: thStyle }, 'Details')
+                                )
+                            ),
+                            React.createElement('tbody', null,
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, 'Yoga Mat Rental'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 500 per session'),
+                                    React.createElement('td', { style: tdStyle }, 'Mats available for rent; clients encouraged to bring their own')
+                                ),
+                                React.createElement('tr', null,
+                                    React.createElement('td', { style: tdStyle }, 'Grip Socks'),
+                                    React.createElement('td', { style: tdStyle }, 'KSh 1,200 – KSh 1,500'),
+                                    React.createElement('td', { style: tdStyle }, 'Required for reformer Pilates for safety; available for purchase')
+                                )
+                            )
+                        )
+                    );
+                }
+
+                if (activeSection === 'contact') {
+                    const handleSubmit = (e) => {
+                        e.preventDefault();
+                        const formData = new FormData(e.target);
+                        const templateParams = {
+                            from_name: formData.get('name'),
+                            from_email: formData.get('email'),
+                            message: formData.get('message'),
+                            class_interest: formData.get('class') || 'General Inquiry'
+                        };
+                        
+                        // EmailJS integration
+                        emailjs.send('service_03rpjbe', 'template_ibjelf7', templateParams, '9sR57EL2XtFwKJByt')
+                            .then(() => {
+                                alert('Message sent successfully!');
+                                e.target.reset();
+                            })
+                            .catch(() => {
+                                alert('Failed to send message. Please try again.');
+                            });
+                    };
+
+                    return React.createElement('div', { style: styles.container },
+                        React.createElement('h2', { style: styles.h2 }, 'Contact & Book'),
+                        React.createElement('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', marginTop: '40px' } },
+                            React.createElement('div', null,
+                                React.createElement('h3', { style: { fontSize: '18px', fontWeight: 500, marginBottom: '15px', margin: '0 0 15px 0' } }, 'Visit Us'),
+                                React.createElement('p', { style: { color: '#666', marginBottom: '20px', margin: '0 0 20px 0' } }, 'One Stop Arcade, Karen', React.createElement('br'), '2nd Floor'),
+                                React.createElement('h4', { style: { fontSize: '18px', fontWeight: 500, marginBottom: '15px', marginTop: '30px', margin: '30px 0 15px 0' } }, 'Hours'),
+                                React.createElement('p', { style: { color: '#666', marginBottom: '20px', margin: '0 0 20px 0' } }, 'Monday-Saturday', React.createElement('br'), '7:00 AM- 7:00 PM'),
+                                React.createElement('h4', { style: { fontSize: '18px', fontWeight: 500, marginBottom: '15px', marginTop: '30px', margin: '30px 0 15px 0' } }, 'Contact Us'),
+                                React.createElement('p', { style: { color: '#666', margin: 0 } }, 'ataradesk25@gmail.com', React.createElement('br'), '+254 791 525 442')
+                            ),
+                            React.createElement('form', { 
+                                style: { display: 'flex', flexDirection: 'column', gap: '20px' },
+                                onSubmit: handleSubmit
+                            },
+                                React.createElement('input', { name: 'name', type: 'text', placeholder: 'Full Name', required: true, style: { padding: '16px', border: '1px solid #f0f0f0', fontSize: '14px', fontFamily: 'inherit', borderRadius: '8px' } }),
+                                React.createElement('input', { name: 'email', type: 'email', placeholder: 'Email Address', required: true, style: { padding: '16px', border: '1px solid #f0f0f0', fontSize: '14px', fontFamily: 'inherit', borderRadius: '8px' } }),
+                                React.createElement('select', { name: 'class', style: { padding: '16px', border: '1px solid #f0f0f0', fontSize: '14px', fontFamily: 'inherit', borderRadius: '8px', background: '#fff' } },
+                                    React.createElement('option', { value: '' }, 'Select Class Interest (Optional)'),
+                                    React.createElement('option', { value: 'Pilates Reformer' }, 'Pilates Reformer'),
+                                    React.createElement('option', { value: 'Yoga' }, 'Yoga'),
+                                    React.createElement('option', { value: 'Dance' }, 'Dance'),
+                                    React.createElement('option', { value: 'Strength Training' }, 'Strength Training')
+                                ),
+                                React.createElement('textarea', { name: 'message', placeholder: 'Message or booking request...', rows: 4, required: true, style: { padding: '16px', border: '1px solid #f0f0f0', fontSize: '14px', fontFamily: 'inherit', borderRadius: '8px' } }),
+                                React.createElement('button', { type: 'submit', style: { ...styles.ctaBtn, borderRadius: '8px' } }, 'Send Booking Request')
+                            )
+                        )
+                    );
+                }
+            };
+
+            return React.createElement('div', { style: styles.app },
+                React.createElement('div', { style: styles.backgroundSlider },
+                    ...backgroundImages.map((img, index) => 
+                        React.createElement('img', {
+                            key: index,
+                            src: img,
+                            style: {
+                                ...styles.backgroundImage,
+                                opacity: index === currentBgIndex ? 1 : 0
+                            }
+                        })
+                    ),
+                    React.createElement('div', { style: styles.overlay })
+                ),
+                React.createElement('nav', { style: styles.nav },
+                    React.createElement('div', { style: { ...styles.navBrand, display: 'flex', alignItems: 'center', gap: '10px' } },
+                        React.createElement('img', { src: './atara-logo.svg', alt: 'Atara Studios Logo', style: { width: '32px', height: '32px' } }),
+                        'ATARA STUDIOS'
+                    ),
+                    React.createElement('div', { style: styles.navLinks },
+                        ['home', 'classes', 'about', 'pricing', 'contact'].map(section =>
+                            React.createElement('button', {
+                                key: section,
+                                style: { ...styles.navLink, color: activeSection === section ? '#000' : '#666' },
+                                onClick: () => setActiveSection(section)
+                            }, section.charAt(0).toUpperCase() + section.slice(1))
+                        )
+                    )
+                ),
+                React.createElement('main', { 
+                    style: activeSection === 'home' ? { ...styles.section, ...styles.sectionHome } : styles.section 
+                }, renderContent())
+            );
+        };
+
+        // Reset body styles
+        document.body.style.margin = '0';
+        document.body.style.padding = '0';
+        document.body.style.boxSizing = 'border-box';
+
+        ReactDOM.render(React.createElement(App), document.getElementById('root'));
+    </script>
+</body>
+</html>
