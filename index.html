@@ -177,6 +177,7 @@
             const [currentBgIndex, setCurrentBgIndex] = useState(0);
             const [expandedCard, setExpandedCard] = useState(null);
             const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            const [isDarkTheme, setIsDarkTheme] = useState(false);
             
             const backgroundImages = [
                 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=1080&fit=crop&crop=center',
@@ -226,23 +227,26 @@
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    background: window.innerWidth <= 768 ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.85)',
+                    background: isDarkTheme 
+                        ? (window.innerWidth <= 768 ? 'rgba(20, 20, 20, 0.95)' : 'rgba(20, 20, 20, 0.85)')
+                        : (window.innerWidth <= 768 ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.85)'),
                     zIndex: 1
                 },
-                nav: { position: 'fixed', top: 0, width: '100%', background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(240, 240, 240, 0.5)', padding: window.innerWidth <= 768 ? '15px 20px' : '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100, boxSizing: 'border-box' },
-                navBrand: { fontWeight: 600, fontSize: window.innerWidth <= 768 ? '16px' : '18px', letterSpacing: '2px', animation: 'slideDown 0.8s ease-out' },
-                navLinks: { display: window.innerWidth <= 768 ? 'none' : 'flex', gap: '40px', flexWrap: 'wrap' },
+                nav: { position: 'fixed', top: 0, width: '100%', background: isDarkTheme ? 'rgba(20, 20, 20, 0.95)' : 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', borderBottom: isDarkTheme ? '1px solid rgba(60, 60, 60, 0.5)' : '1px solid rgba(240, 240, 240, 0.5)', padding: window.innerWidth <= 768 ? '15px 20px' : '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100, boxSizing: 'border-box' },
+                navBrand: { fontWeight: 600, fontSize: window.innerWidth <= 768 ? '16px' : '18px', letterSpacing: '2px', animation: 'slideDown 0.8s ease-out', color: isDarkTheme ? '#fff' : '#000' },
+                navLinks: { display: window.innerWidth <= 768 ? 'none' : 'flex', gap: '30px', flexWrap: 'wrap', alignItems: 'center' },
                 navLink: { background: 'none', border: 'none', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit', textTransform: 'capitalize' },
-                hamburger: { display: window.innerWidth <= 768 ? 'block' : 'none', background: 'none', border: 'none', cursor: 'pointer', padding: '5px' },
-                mobileMenu: { position: 'fixed', top: '70px', left: 0, width: '100%', background: 'rgba(255, 255, 255, 0.98)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(240, 240, 240, 0.5)', padding: '20px', display: mobileMenuOpen && window.innerWidth <= 768 ? 'flex' : 'none', flexDirection: 'column', gap: '15px', zIndex: 99 },
+                hamburger: { display: window.innerWidth <= 768 ? 'flex' : 'none', background: 'none', border: 'none', cursor: 'pointer', padding: '5px', gap: '10px', alignItems: 'center' },
+                themeToggle: { background: 'none', border: 'none', cursor: 'pointer', padding: '5px', display: window.innerWidth <= 768 ? 'none' : 'block' },
+                mobileMenu: { position: 'fixed', top: '70px', left: 0, width: '100%', background: isDarkTheme ? 'rgba(20, 20, 20, 0.98)' : 'rgba(255, 255, 255, 0.98)', backdropFilter: 'blur(10px)', borderBottom: isDarkTheme ? '1px solid rgba(60, 60, 60, 0.5)' : '1px solid rgba(240, 240, 240, 0.5)', padding: '20px', display: mobileMenuOpen && window.innerWidth <= 768 ? 'flex' : 'none', flexDirection: 'column', gap: '15px', zIndex: 99 },
                 mobileNavLink: { background: 'none', border: 'none', fontSize: '16px', cursor: 'pointer', fontFamily: 'inherit', textTransform: 'capitalize', padding: '10px 0', textAlign: 'left' },
                 section: { minHeight: window.innerWidth <= 768 ? 'auto' : '100vh', paddingTop: '80px', position: 'relative', zIndex: 2 },
                 sectionHome: { paddingTop: window.innerWidth <= 768 ? '100px' : 0, paddingBottom: '60px' },
-                container: { maxWidth: '1200px', margin: '0 auto', padding: window.innerWidth <= 768 ? '30px 20px' : '60px 40px', background: 'rgba(255, 255, 255, 0.9)', borderRadius: '20px', backdropFilter: 'blur(10px)' },
+                container: { maxWidth: '1200px', margin: '0 auto', padding: window.innerWidth <= 768 ? '30px 20px' : '60px 40px', background: isDarkTheme ? 'rgba(30, 30, 30, 0.9)' : 'rgba(255, 255, 255, 0.9)', borderRadius: '20px', backdropFilter: 'blur(10px)', color: isDarkTheme ? '#fff' : '#000' },
                 hero: { display: 'grid', gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '1fr 1fr', gap: window.innerWidth <= 768 ? '30px' : '80px', alignItems: 'center', minHeight: window.innerWidth <= 768 ? 'auto' : '100vh', padding: window.innerWidth <= 768 ? '20px' : '0 40px', maxWidth: '1200px', margin: '0 auto' },
-                heroH1: { fontSize: window.innerWidth <= 768 ? '32px' : '48px', fontWeight: 300, marginBottom: '20px', lineHeight: 1.2, margin: '0 0 20px 0', textAlign: window.innerWidth <= 768 ? 'center' : 'left', animation: 'fadeInUp 1s ease-out' },
-                heroP: { fontSize: window.innerWidth <= 768 ? '16px' : '18px', color: '#666', marginBottom: '40px', margin: '0 0 40px 0', textAlign: window.innerWidth <= 768 ? 'center' : 'left', animation: 'fadeInUp 1.2s ease-out' },
-                ctaBtn: { background: '#000', color: '#fff', border: 'none', padding: window.innerWidth <= 768 ? '14px 28px' : '16px 32px', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit', width: window.innerWidth <= 768 ? '100%' : 'auto', transition: 'all 0.3s ease', animation: 'fadeInUp 1.4s ease-out' },
+                heroH1: { fontSize: window.innerWidth <= 768 ? '32px' : '48px', fontWeight: 300, marginBottom: '20px', lineHeight: 1.2, margin: '0 0 20px 0', textAlign: window.innerWidth <= 768 ? 'center' : 'left', animation: 'fadeInUp 1s ease-out', color: isDarkTheme ? '#fff' : '#000' },
+                heroP: { fontSize: window.innerWidth <= 768 ? '16px' : '18px', color: isDarkTheme ? '#ccc' : '#666', marginBottom: '40px', margin: '0 0 40px 0', textAlign: window.innerWidth <= 768 ? 'center' : 'left', animation: 'fadeInUp 1.2s ease-out' },
+                ctaBtn: { background: isDarkTheme ? '#fff' : '#000', color: isDarkTheme ? '#000' : '#fff', border: 'none', padding: window.innerWidth <= 768 ? '14px 28px' : '16px 32px', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit', width: window.innerWidth <= 768 ? '100%' : 'auto', transition: 'all 0.3s ease', animation: 'fadeInUp 1.4s ease-out' },
                 imagePlaceholder: { aspectRatio: '4/5', background: '#f8f8f8', border: '1px solid #f0f0f0' },
                 grid: { display: 'grid', gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))', gap: window.innerWidth <= 768 ? '30px' : '40px', marginTop: window.innerWidth <= 768 ? '40px' : '60px' },
                 classCard: { textAlign: 'center', borderRadius: '15px', overflow: 'hidden', background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.2)', padding: window.innerWidth <= 768 ? '20px' : '0' },
@@ -771,19 +775,41 @@
                         ['home', 'classes', 'about', 'pricing', 'contact'].map(section =>
                             React.createElement('button', {
                                 key: section,
-                                style: { ...styles.navLink, color: activeSection === section ? '#000' : '#666' },
+                                style: { ...styles.navLink, color: activeSection === section ? (isDarkTheme ? '#fff' : '#000') : (isDarkTheme ? '#ccc' : '#666') },
                                 onClick: () => setActiveSection(section)
                             }, section.charAt(0).toUpperCase() + section.slice(1))
+                        ),
+                        React.createElement('button', {
+                            style: styles.themeToggle,
+                            onClick: () => setIsDarkTheme(!isDarkTheme)
+                        },
+                            React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: isDarkTheme ? '#fff' : '#000', strokeWidth: 2 },
+                                isDarkTheme 
+                                    ? React.createElement('circle', { cx: 12, cy: 12, r: 5 })
+                                    : React.createElement('path', { d: 'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z' })
+                            )
                         )
                     ),
-                    React.createElement('button', {
-                        style: styles.hamburger,
-                        onClick: () => setMobileMenuOpen(!mobileMenuOpen)
-                    },
-                        React.createElement('svg', { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none', stroke: '#000', strokeWidth: 2 },
-                            React.createElement('line', { x1: 3, y1: 6, x2: 21, y2: 6 }),
-                            React.createElement('line', { x1: 3, y1: 12, x2: 21, y2: 12 }),
-                            React.createElement('line', { x1: 3, y1: 18, x2: 21, y2: 18 })
+                    React.createElement('div', { style: styles.hamburger },
+                        React.createElement('button', {
+                            style: { background: 'none', border: 'none', cursor: 'pointer', padding: '5px' },
+                            onClick: () => setIsDarkTheme(!isDarkTheme)
+                        },
+                            React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: isDarkTheme ? '#fff' : '#000', strokeWidth: 2 },
+                                isDarkTheme 
+                                    ? React.createElement('circle', { cx: 12, cy: 12, r: 5 })
+                                    : React.createElement('path', { d: 'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z' })
+                            )
+                        ),
+                        React.createElement('button', {
+                            style: { background: 'none', border: 'none', cursor: 'pointer', padding: '5px' },
+                            onClick: () => setMobileMenuOpen(!mobileMenuOpen)
+                        },
+                            React.createElement('svg', { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none', stroke: isDarkTheme ? '#fff' : '#000', strokeWidth: 2 },
+                                React.createElement('line', { x1: 3, y1: 6, x2: 21, y2: 6 }),
+                                React.createElement('line', { x1: 3, y1: 12, x2: 21, y2: 12 }),
+                                React.createElement('line', { x1: 3, y1: 18, x2: 21, y2: 18 })
+                            )
                         )
                     )
                 ),
@@ -791,7 +817,7 @@
                     ['home', 'classes', 'about', 'pricing', 'contact'].map(section =>
                         React.createElement('button', {
                             key: section,
-                            style: { ...styles.mobileNavLink, color: activeSection === section ? '#000' : '#666' },
+                            style: { ...styles.mobileNavLink, color: activeSection === section ? (isDarkTheme ? '#fff' : '#000') : (isDarkTheme ? '#ccc' : '#666') },
                             onClick: () => {
                                 setActiveSection(section);
                                 setMobileMenuOpen(false);
