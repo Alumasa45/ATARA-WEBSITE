@@ -39,9 +39,14 @@ const App = () => {
   const currentTheme = isDarkTheme ? theme.dark : theme.light;
 
   const backgroundImages = [
-    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=1080&fit=crop',
-    'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1920&h=1080&fit=crop',
-    'https://images.unsplash.com/photo-1506629905607-d405d7d3b0d2?w=1920&h=1080&fit=crop'
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=1080&fit=crop&auto=format',
+    'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1920&h=1080&fit=crop&auto=format',
+    'https://images.unsplash.com/photo-1506629905607-d405d7d3b0d2?w=1920&h=1080&fit=crop&auto=format',
+    'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1920&h=1080&fit=crop&auto=format',
+    'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=1920&h=1080&fit=crop&auto=format',
+    'https://images.unsplash.com/photo-1540549861982-da9573c8ba69?w=1920&h=1080&fit=crop&auto=format',
+    'https://images.unsplash.com/photo-1549060279-7e168fcee0c2?w=1920&h=1080&fit=crop&auto=format',
+    'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=1920&h=1080&fit=crop&auto=format'
   ];
 
   const [currentBgIndex, setCurrentBgIndex] = React.useState(0);
@@ -112,8 +117,8 @@ const App = () => {
               </button>
             </div>
             <img 
-              src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&h=600&fit=crop" 
-              alt="Fitness studio with modern equipment and natural lighting" 
+              src="https://images.unsplash.com/photo-1506629905607-d405d7d3b0d2?w=500&h=600&fit=crop" 
+              alt="Peaceful yoga session with natural lighting" 
               style={{ ...styles.imagePlaceholder, objectFit: 'cover', borderRadius: '12px', width: '100%', height: 'auto' }}
             />
           </div>
