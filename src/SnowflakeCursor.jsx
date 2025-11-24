@@ -110,11 +110,46 @@ class Particle {
     context.save();
     context.globalAlpha = opacity;
     context.shadowColor = 'white';
-    context.shadowBlur = 10;
+    context.shadowBlur = 8;
     context.fillStyle = 'white';
+    context.translate(this.position.x, this.position.y);
+    context.scale(scale, scale);
+    
+    // Draw snowflake shape
+    const size = this.size;
+    context.lineWidth = 1;
+    context.strokeStyle = 'white';
+    
+    // Main cross
     context.beginPath();
-    context.arc(this.position.x, this.position.y, this.size * scale, 0, Math.PI * 2);
-    context.fill();
+    context.moveTo(-size, 0);
+    context.lineTo(size, 0);
+    context.moveTo(0, -size);
+    context.lineTo(0, size);
+    
+    // Diagonal lines
+    context.moveTo(-size * 0.7, -size * 0.7);
+    context.lineTo(size * 0.7, size * 0.7);
+    context.moveTo(-size * 0.7, size * 0.7);
+    context.lineTo(size * 0.7, -size * 0.7);
+    
+    // Small branches
+    for (let i = 0; i < 8; i++) {
+      const angle = (i * Math.PI) / 4;
+      const x1 = Math.cos(angle) * size * 0.5;
+      const y1 = Math.sin(angle) * size * 0.5;
+      const x2 = Math.cos(angle + 0.5) * size * 0.3;
+      const y2 = Math.sin(angle + 0.5) * size * 0.3;
+      const x3 = Math.cos(angle - 0.5) * size * 0.3;
+      const y3 = Math.sin(angle - 0.5) * size * 0.3;
+      
+      context.moveTo(x1, y1);
+      context.lineTo(x1 + x2, y1 + y2);
+      context.moveTo(x1, y1);
+      context.lineTo(x1 + x3, y1 + y3);
+    }
+    
+    context.stroke();
     context.restore();
   }
 }

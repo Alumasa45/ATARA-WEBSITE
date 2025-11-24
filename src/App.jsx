@@ -81,7 +81,9 @@ const App = () => {
               Book a Class
             </button>
           </div>
-          <div style={{ ...styles.imagePlaceholder, ...styles.fadeInDelay }}></div>
+          <div style={{ ...styles.imagePlaceholder, ...styles.fadeInDelay, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', color: currentTheme.textSecondary, textAlign: 'center', padding: '20px' }}>
+            [AI Image: Black woman in elegant Pilates pose on reformer, serene studio lighting]
+          </div>
         </div>
       );
     }
@@ -96,13 +98,23 @@ const App = () => {
               { name: 'Mat Pilates', desc: 'Core-focused floor exercises for strength and flexibility' },
               { name: 'Dance', desc: 'Expressive movement combining technique and creativity' },
               { name: 'Strength Training', desc: 'Functional fitness for everyday movement and power' }
-            ].map(cls => (
-              <div key={cls.name} style={styles.classCard}>
-                <div style={styles.classImage}></div>
-                <h3 style={styles.h3}>{cls.name}</h3>
-                <p style={styles.cardP}>{cls.desc}</p>
-              </div>
-            ))}
+            ].map((cls, index) => {
+              const imageDescriptions = [
+                '[AI Image: Black instructor demonstrating Pilates reformer with focused expression]',
+                '[AI Image: Black woman in flowing mat Pilates pose, peaceful expression]',
+                '[AI Image: Black dancers in synchronized movement, joyful energy]',
+                '[AI Image: Black athlete doing strength training, determined and powerful]'
+              ];
+              return (
+                <div key={cls.name} style={styles.classCard}>
+                  <div style={{ ...styles.classImage, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', color: currentTheme.textSecondary, textAlign: 'center', padding: '15px' }}>
+                    {imageDescriptions[index]}
+                  </div>
+                  <h3 style={styles.h3}>{cls.name}</h3>
+                  <p style={styles.cardP}>{cls.desc}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       );
@@ -124,13 +136,24 @@ const App = () => {
                 { name: 'Pedro', role: 'Dance Trainer' },
                 { name: 'Flex', role: 'Dance trainer' },
                 { name: 'Joy', role: 'Dance Trainer' }
-              ].map(trainer => (
-                <div key={trainer.name} style={{ textAlign: 'center' }}>
-                  <div style={{ width: '120px', height: '120px', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, borderRadius: '50%', margin: '0 auto 15px' }}></div>
-                  <h4 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '5px', color: currentTheme.text }}>{trainer.name}</h4>
-                  <p style={{ color: currentTheme.textSecondary, fontSize: '14px' }}>{trainer.role}</p>
-                </div>
-              ))}
+              ].map((trainer, index) => {
+                const trainerImages = [
+                  '[AI: Melody - Black woman, warm smile, yoga attire]',
+                  '[AI: Victryn - Black woman, welcoming pose]',
+                  '[AI: Pedro - Black man, dance instructor energy]',
+                  '[AI: Flex - Black man, dynamic dance pose]',
+                  '[AI: Joy - Black woman, bright smile, dance outfit]'
+                ];
+                return (
+                  <div key={trainer.name} style={{ textAlign: 'center' }}>
+                    <div style={{ width: '120px', height: '120px', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, borderRadius: '50%', margin: '0 auto 15px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '9px', color: currentTheme.textSecondary, textAlign: 'center', padding: '8px' }}>
+                      {trainerImages[index]}
+                    </div>
+                    <h4 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '5px', color: currentTheme.text }}>{trainer.name}</h4>
+                    <p style={{ color: currentTheme.textSecondary, fontSize: '14px' }}>{trainer.role}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
