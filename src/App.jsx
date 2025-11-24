@@ -98,8 +98,9 @@ const App = () => {
     ctaBtn: { background: currentTheme.text, color: currentTheme.bg, border: 'none', padding: '16px 32px', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit' },
     imagePlaceholder: { aspectRatio: '4/5', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, borderRadius: '12px' },
     grid: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))', gap: isMobile ? '30px' : '40px', marginTop: isMobile ? '40px' : '60px' },
-    classCard: { textAlign: 'center', background: `${currentTheme.bg}E6`, backdropFilter: 'blur(10px)', borderRadius: '20px', border: `1px solid ${currentTheme.border}`, padding: '20px', cursor: 'pointer', transition: 'all 0.3s ease', transform: 'scale(1)' },
-    classCardExpanded: { transform: 'scale(1.02)', boxShadow: `0 8px 32px ${currentTheme.border}` },
+    classCard: { textAlign: 'center', background: `${currentTheme.bg}E6`, backdropFilter: 'blur(10px)', borderRadius: '20px', border: `1px solid ${currentTheme.border}`, padding: '20px', cursor: 'pointer', transition: 'all 0.3s ease' },
+    classCardHover: { transform: 'translateY(-5px)', boxShadow: `0 8px 32px ${currentTheme.border}` },
+    expandedDetails: { background: `${currentTheme.bg}F0`, backdropFilter: 'blur(15px)', borderRadius: '20px', border: `1px solid ${currentTheme.border}`, padding: '30px', marginTop: '20px', animation: 'fadeInUp 0.3s ease-out' },
     classImage: { aspectRatio: '4/3', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, marginBottom: '20px', borderRadius: '16px', width: '100%' },
     h2: { fontSize: '32px', fontWeight: 300, textAlign: 'center' },
     h3: { fontSize: '20px', fontWeight: 500, marginBottom: '10px' },
@@ -229,39 +230,38 @@ const App = () => {
               ];
               const isExpanded = expandedCard === index;
               return (
-                <div 
-                  key={cls.name} 
-                  style={{ 
-                    ...styles.classCard, 
-                    ...(isExpanded ? styles.classCardExpanded : {})
-                  }}
-                  onClick={() => setExpandedCard(isExpanded ? null : index)}
-                >
-                  <img 
-                    src={classImages[index]} 
-                    alt={cls.name} 
-                    style={{ ...styles.classImage, objectFit: 'cover', borderRadius: '16px' }}
-                  />
-                  <h3 style={styles.h3}>{cls.name}</h3>
-                  <p style={styles.cardP}>{cls.desc}</p>
+                <React.Fragment key={cls.name}>
+                  <div 
+                    style={styles.classCard}
+                    onClick={() => setExpandedCard(isExpanded ? null : index)}
+                  >
+                    <img 
+                      src={classImages[index]} 
+                      alt={cls.name} 
+                      style={{ ...styles.classImage, objectFit: 'cover', borderRadius: '16px' }}
+                    />
+                    <h3 style={styles.h3}>{cls.name}</h3>
+                    <p style={styles.cardP}>{cls.desc}</p>
+                  </div>
                   
                   {isExpanded && (
-                    <div style={{ marginTop: '20px', textAlign: 'left' }}>
-                      <p style={{ color: currentTheme.text, fontSize: '14px', lineHeight: 1.6, marginBottom: '15px' }}>
+                    <div style={{ ...styles.expandedDetails, gridColumn: isMobile ? '1' : 'span 2' }}>
+                      <h3 style={{ ...styles.h3, marginBottom: '15px', textAlign: 'left' }}>{cls.name} Details</h3>
+                      <p style={{ color: currentTheme.text, fontSize: '16px', lineHeight: 1.6, marginBottom: '20px' }}>
                         {cls.details}
                       </p>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '20px' }}>
-                        <div>
-                          <strong style={{ color: currentTheme.text, fontSize: '12px' }}>Duration</strong>
-                          <p style={{ color: currentTheme.textSecondary, fontSize: '12px', margin: '2px 0' }}>{cls.duration}</p>
+                      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: '20px', marginBottom: '25px' }}>
+                        <div style={{ textAlign: 'center', padding: '15px', background: `${currentTheme.bg}CC`, borderRadius: '12px' }}>
+                          <strong style={{ color: currentTheme.text, fontSize: '14px', display: 'block', marginBottom: '5px' }}>Duration</strong>
+                          <p style={{ color: currentTheme.textSecondary, fontSize: '16px', margin: 0 }}>{cls.duration}</p>
                         </div>
-                        <div>
-                          <strong style={{ color: currentTheme.text, fontSize: '12px' }}>Level</strong>
-                          <p style={{ color: currentTheme.textSecondary, fontSize: '12px', margin: '2px 0' }}>{cls.level}</p>
+                        <div style={{ textAlign: 'center', padding: '15px', background: `${currentTheme.bg}CC`, borderRadius: '12px' }}>
+                          <strong style={{ color: currentTheme.text, fontSize: '14px', display: 'block', marginBottom: '5px' }}>Level</strong>
+                          <p style={{ color: currentTheme.textSecondary, fontSize: '16px', margin: 0 }}>{cls.level}</p>
                         </div>
-                        <div>
-                          <strong style={{ color: currentTheme.text, fontSize: '12px' }}>Price</strong>
-                          <p style={{ color: currentTheme.textSecondary, fontSize: '12px', margin: '2px 0' }}>{cls.price}</p>
+                        <div style={{ textAlign: 'center', padding: '15px', background: `${currentTheme.bg}CC`, borderRadius: '12px' }}>
+                          <strong style={{ color: currentTheme.text, fontSize: '14px', display: 'block', marginBottom: '5px' }}>Price</strong>
+                          <p style={{ color: currentTheme.textSecondary, fontSize: '18px', fontWeight: 600, margin: 0 }}>{cls.price}</p>
                         </div>
                       </div>
                       <button 
@@ -269,18 +269,16 @@ const App = () => {
                           ...styles.ctaBtn, 
                           width: '100%', 
                           borderRadius: '12px',
-                          marginTop: '10px'
+                          padding: '16px',
+                          fontSize: '16px'
                         }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setActiveSection('contact');
-                        }}
+                        onClick={() => setActiveSection('contact')}
                       >
-                        Book Now
+                        Book Now - {cls.name}
                       </button>
                     </div>
                   )}
-                </div>
+                </React.Fragment>
               );
             })}
           </div>
