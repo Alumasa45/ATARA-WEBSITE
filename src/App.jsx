@@ -114,7 +114,7 @@ const App = () => {
             <img 
               src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&h=600&fit=crop" 
               alt="Fitness studio with modern equipment and natural lighting" 
-              style={{ ...styles.imagePlaceholder, ...styles.fadeInDelay, objectFit: 'cover', borderRadius: '12px', width: '100%' }}
+              style={{ ...styles.imagePlaceholder, objectFit: 'cover', borderRadius: '12px', width: '100%', height: 'auto' }}
             />
           </div>
 
