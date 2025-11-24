@@ -1,42 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import SnowflakeCursor from './SnowflakeCursor';
 
 const App = () => {
   const [activeSection, setActiveSection] = useState('home');
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      if (window.innerWidth > 768) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const theme = {
+    light: {
+      bg: '#fff',
+      text: '#000',
+      textSecondary: '#666',
+      border: '#f0f0f0',
+      cardBg: '#f8f8f8'
+    },
+    dark: {
+      bg: '#1a1a1a',
+      text: '#fff',
+      textSecondary: '#ccc',
+      border: '#333',
+      cardBg: '#2a2a2a'
+    }
+  };
+
+  const currentTheme = isDarkTheme ? theme.dark : theme.light;
 
   const styles = {
-    app: { minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' },
-    nav: { position: 'fixed', top: 0, width: '100%', background: '#fff', borderBottom: '1px solid #f0f0f0', padding: '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 },
-    navBrand: { fontWeight: 600, fontSize: '18px', letterSpacing: '2px' },
-    navLinks: { display: 'flex', gap: '40px' },
-    navLink: { background: 'none', border: 'none', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit', textTransform: 'capitalize' },
+    app: { minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', background: currentTheme.bg, color: currentTheme.text, transition: 'all 0.3s ease' },
+    nav: { position: 'fixed', top: 0, width: '100%', background: currentTheme.bg, borderBottom: `1px solid ${currentTheme.border}`, padding: '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 },
+    navBrand: { fontWeight: 600, fontSize: '18px', letterSpacing: '2px', color: currentTheme.text },
+    navLinks: { display: isMobile ? 'none' : 'flex', gap: '40px' },
+    navLink: { background: 'none', border: 'none', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit', textTransform: 'capitalize', color: currentTheme.textSecondary },
+    navRight: { display: 'flex', alignItems: 'center', gap: '20px' },
+    themeToggle: { display: 'flex', background: currentTheme.border, borderRadius: '20px', padding: '2px' },
+    themeBtn: { padding: '6px 12px', border: 'none', borderRadius: '18px', fontSize: '12px', cursor: 'pointer', transition: 'all 0.2s', fontFamily: 'inherit' },
+    themeBtnActive: { background: currentTheme.text, color: currentTheme.bg },
+    themeBtnInactive: { background: 'transparent', color: currentTheme.textSecondary },
+    hamburger: { display: isMobile ? 'flex' : 'none', flexDirection: 'column', cursor: 'pointer', gap: '4px' },
+    hamburgerLine: { width: '24px', height: '2px', background: currentTheme.text, transition: 'all 0.3s' },
+    mobileMenu: { position: 'absolute', top: '100%', left: 0, right: 0, background: currentTheme.bg, borderBottom: `1px solid ${currentTheme.border}`, padding: '20px', display: isMobileMenuOpen && isMobile ? 'flex' : 'none', flexDirection: 'column', gap: '15px' },
+    fadeIn: { animation: 'fadeInUp 0.8s ease-out' },
+    fadeInDelay: { animation: 'fadeInUp 0.8s ease-out 0.2s both' },
+    fadeInDelayLong: { animation: 'fadeInUp 0.8s ease-out 0.4s both' },
     section: { minHeight: '100vh', paddingTop: '80px' },
     sectionHome: { paddingTop: 0 },
     container: { maxWidth: '1200px', marginLeft: 'auto', marginRight: 'auto', padding: '60px 40px' },
     hero: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center', minHeight: '100vh', padding: '0 40px', maxWidth: '1200px', margin: '0 auto' },
     heroH1: { fontSize: '48px', fontWeight: 300, marginBottom: '20px', lineHeight: 1.2 },
-    heroP: { fontSize: '18px', color: '#666', marginBottom: '40px' },
-    ctaBtn: { background: '#000', color: '#fff', border: 'none', padding: '16px 32px', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit' },
-    imagePlaceholder: { aspectRatio: '4/5', background: '#f8f8f8', border: '1px solid #f0f0f0' },
+    heroP: { fontSize: '18px', color: currentTheme.textSecondary, marginBottom: '40px' },
+    ctaBtn: { background: currentTheme.text, color: currentTheme.bg, border: 'none', padding: '16px 32px', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit' },
+    imagePlaceholder: { aspectRatio: '4/5', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}` },
     grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '40px', marginTop: '60px' },
     classCard: { textAlign: 'center' },
-    classImage: { aspectRatio: '4/3', background: '#f8f8f8', border: '1px solid #f0f0f0', marginBottom: '20px' },
+    classImage: { aspectRatio: '4/3', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, marginBottom: '20px' },
     h2: { fontSize: '32px', fontWeight: 300, textAlign: 'center' },
     h3: { fontSize: '20px', fontWeight: 500, marginBottom: '10px' },
-    cardP: { color: '#666', fontSize: '14px' }
+    cardP: { color: currentTheme.textSecondary, fontSize: '14px' }
   };
 
   const renderContent = () => {
     if (activeSection === 'home') {
       return (
         <div style={styles.hero}>
-          <div>
+          <div style={styles.fadeIn}>
             <h1 style={styles.heroH1}>Movement. Strength. Balance.</h1>
             <p style={styles.heroP}>Premium Pilates, Dance & Strength Training</p>
             <button style={styles.ctaBtn} onClick={() => setActiveSection('contact')}>
               Book a Class
             </button>
           </div>
-          <div style={styles.imagePlaceholder}></div>
+          <div style={{ ...styles.imagePlaceholder, ...styles.fadeInDelay }}></div>
         </div>
       );
     }
@@ -44,8 +89,8 @@ const App = () => {
     if (activeSection === 'classes') {
       return (
         <div style={styles.container}>
-          <h2 style={styles.h2}>Classes</h2>
-          <div style={styles.grid}>
+          <h2 style={{ ...styles.h2, ...styles.fadeIn }}>Classes</h2>
+          <div style={{ ...styles.grid, ...styles.fadeInDelay }}>
             {[
               { name: 'Pilates Reformer', desc: 'Dynamic full-body workout using specialized equipment' },
               { name: 'Mat Pilates', desc: 'Core-focused floor exercises for strength and flexibility' },
@@ -66,8 +111,8 @@ const App = () => {
     if (activeSection === 'about') {
       return (
         <div style={styles.container}>
-          <h2 style={styles.h2}>About</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', marginTop: '40px' }}>
+          <h2 style={{ ...styles.h2, ...styles.fadeIn }}>About</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', marginTop: '40px', ...styles.fadeInDelay }}>
             <div>
               <h3 style={{ fontSize: '24px', fontWeight: 500, marginBottom: '20px' }}>Our Philosophy</h3>
               <p>At Atara Studios, we believe movement is medicine. Our carefully curated classes blend traditional techniques with modern approaches to create transformative experiences for body and mind.</p>
@@ -81,9 +126,9 @@ const App = () => {
                 { name: 'Joy', role: 'Dance Trainer' }
               ].map(trainer => (
                 <div key={trainer.name} style={{ textAlign: 'center' }}>
-                  <div style={{ width: '120px', height: '120px', background: '#f8f8f8', border: '1px solid #f0f0f0', borderRadius: '50%', margin: '0 auto 15px' }}></div>
-                  <h4 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '5px' }}>{trainer.name}</h4>
-                  <p style={{ color: '#666', fontSize: '14px' }}>{trainer.role}</p>
+                  <div style={{ width: '120px', height: '120px', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, borderRadius: '50%', margin: '0 auto 15px' }}></div>
+                  <h4 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '5px', color: currentTheme.text }}>{trainer.name}</h4>
+                  <p style={{ color: currentTheme.textSecondary, fontSize: '14px' }}>{trainer.role}</p>
                 </div>
               ))}
             </div>
@@ -94,16 +139,16 @@ const App = () => {
 
     if (activeSection === 'pricing') {
       const tableStyle = { width: '100%', borderCollapse: 'collapse', marginBottom: '40px' };
-      const thStyle = { padding: '15px', borderBottom: '2px solid #000', textAlign: 'left', fontWeight: 600 };
-      const tdStyle = { padding: '12px 15px', borderBottom: '1px solid #f0f0f0' };
+      const thStyle = { padding: '15px', borderBottom: `2px solid ${currentTheme.text}`, textAlign: 'left', fontWeight: 600, color: currentTheme.text };
+      const tdStyle = { padding: '12px 15px', borderBottom: `1px solid ${currentTheme.border}`, color: currentTheme.text };
       const sectionTitle = { fontSize: '24px', fontWeight: 500, marginBottom: '20px', marginTop: '40px' };
       
       return (
         <div style={styles.container}>
-          <h2 style={styles.h2}>Membership & Pricing</h2>
+          <h2 style={{ ...styles.h2, ...styles.fadeIn }}>Membership & Pricing</h2>
           
-          <h3 style={sectionTitle}>Monthly Memberships</h3>
-          <table style={tableStyle}>
+          <h3 style={{ ...sectionTitle, ...styles.fadeInDelay }}>Monthly Memberships</h3>
+          <table style={{ ...tableStyle, ...styles.fadeInDelayLong }}>
             <thead>
               <tr>
                 <th style={thStyle}>Membership Type</th>
@@ -267,18 +312,18 @@ const App = () => {
     if (activeSection === 'contact') {
       return (
         <div style={styles.container}>
-          <h2 style={styles.h2}>Contact</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', marginTop: '40px' }}>
+          <h2 style={{ ...styles.h2, ...styles.fadeIn }}>Contact</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', marginTop: '40px', ...styles.fadeInDelay }}>
             <div>
               <h3 style={{ fontSize: '18px', fontWeight: 500, marginBottom: '15px' }}>Visit Us</h3>
-              <p style={{ color: '#666', marginBottom: '20px' }}>123 Wellness Avenue<br />Downtown District</p>
-              <h4 style={{ fontSize: '18px', fontWeight: 500, marginBottom: '15px', marginTop: '30px' }}>Hours</h4>
-              <p style={{ color: '#666' }}>Monday - Sunday<br />7:00 AM - 7:00 PM</p>
+              <p style={{ color: currentTheme.textSecondary, marginBottom: '20px' }}>123 Wellness Avenue<br />Downtown District</p>
+              <h4 style={{ fontSize: '18px', fontWeight: 500, marginBottom: '15px', marginTop: '30px', color: currentTheme.text }}>Hours</h4>
+              <p style={{ color: currentTheme.textSecondary }}>Monday - Sunday<br />7:00 AM - 7:00 PM</p>
             </div>
             <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }} onSubmit={e => e.preventDefault()}>
-              <input type="text" placeholder="Name" required style={{ padding: '16px', border: '1px solid #f0f0f0', fontSize: '14px', fontFamily: 'inherit' }} />
-              <input type="email" placeholder="Email" required style={{ padding: '16px', border: '1px solid #f0f0f0', fontSize: '14px', fontFamily: 'inherit' }} />
-              <textarea placeholder="Message" rows="4" required style={{ padding: '16px', border: '1px solid #f0f0f0', fontSize: '14px', fontFamily: 'inherit' }}></textarea>
+              <input type="text" placeholder="Name" required style={{ padding: '16px', border: `1px solid ${currentTheme.border}`, fontSize: '14px', fontFamily: 'inherit', background: currentTheme.bg, color: currentTheme.text }} />
+              <input type="email" placeholder="Email" required style={{ padding: '16px', border: `1px solid ${currentTheme.border}`, fontSize: '14px', fontFamily: 'inherit', background: currentTheme.bg, color: currentTheme.text }} />
+              <textarea placeholder="Message" rows="4" required style={{ padding: '16px', border: `1px solid ${currentTheme.border}`, fontSize: '14px', fontFamily: 'inherit', background: currentTheme.bg, color: currentTheme.text }}></textarea>
               <button type="submit" style={styles.ctaBtn}>Send Message</button>
             </form>
           </div>
@@ -289,14 +334,57 @@ const App = () => {
 
   return (
     <div style={styles.app}>
+      <SnowflakeCursor />
       <nav style={styles.nav}>
         <div style={styles.navBrand}>ATARA STUDIOS</div>
+        
         <div style={styles.navLinks}>
           {['home', 'classes', 'about', 'pricing', 'contact'].map(section => (
             <button
               key={section}
-              style={{ ...styles.navLink, color: activeSection === section ? '#000' : '#666' }}
+              style={{ ...styles.navLink, color: activeSection === section ? currentTheme.text : currentTheme.textSecondary }}
               onClick={() => setActiveSection(section)}
+            >
+              {section.charAt(0).toUpperCase() + section.slice(1)}
+            </button>
+          ))}
+        </div>
+
+        <div style={styles.navRight}>
+          <div style={styles.themeToggle}>
+            <button
+              style={!isDarkTheme ? { ...styles.themeBtn, ...styles.themeBtnActive } : { ...styles.themeBtn, ...styles.themeBtnInactive }}
+              onClick={() => setIsDarkTheme(false)}
+            >
+              Light
+            </button>
+            <button
+              style={isDarkTheme ? { ...styles.themeBtn, ...styles.themeBtnActive } : { ...styles.themeBtn, ...styles.themeBtnInactive }}
+              onClick={() => setIsDarkTheme(true)}
+            >
+              Dark
+            </button>
+          </div>
+
+          <div 
+            style={styles.hamburger}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <div style={styles.hamburgerLine}></div>
+            <div style={styles.hamburgerLine}></div>
+            <div style={styles.hamburgerLine}></div>
+          </div>
+        </div>
+
+        <div style={styles.mobileMenu}>
+          {['home', 'classes', 'about', 'pricing', 'contact'].map(section => (
+            <button
+              key={section}
+              style={{ ...styles.navLink, color: activeSection === section ? currentTheme.text : currentTheme.textSecondary }}
+              onClick={() => {
+                setActiveSection(section);
+                setIsMobileMenuOpen(false);
+              }}
             >
               {section.charAt(0).toUpperCase() + section.slice(1)}
             </button>
