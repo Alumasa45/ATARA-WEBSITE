@@ -773,9 +773,18 @@
                 React.createElement('nav', { style: styles.nav },
                     React.createElement('div', { style: styles.navBrand },
                         React.createElement('img', { 
-                            src: './logo.png',
+                            src: 'logo.png',
                             alt: 'Atara Studios Logo',
-                            style: styles.logo
+                            style: styles.logo,
+                            onError: (e) => {
+                                const alternatives = ['logo.jpg', 'logo.jpeg', 'logo.svg', 'assets/logo.png', 'images/logo.png', 'public/logo.png'];
+                                const currentIndex = alternatives.indexOf(e.target.src.split('/').pop()) + 1;
+                                if (currentIndex < alternatives.length) {
+                                    e.target.src = alternatives[currentIndex];
+                                } else {
+                                    e.target.style.display = 'none';
+                                }
+                            }
                         }),
                         'ATARA STUDIOS'
                     ),
