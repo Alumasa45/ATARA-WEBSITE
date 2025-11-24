@@ -112,8 +112,8 @@ const App = () => {
               </button>
             </div>
             <img 
-              src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=500&fit=crop&crop=face" 
-              alt="Black woman in elegant Pilates pose" 
+              src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&h=600&fit=crop" 
+              alt="Fitness studio with modern equipment and natural lighting" 
               style={{ ...styles.imagePlaceholder, ...styles.fadeInDelay, objectFit: 'cover', borderRadius: '12px', width: '100%' }}
             />
           </div>
