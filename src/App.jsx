@@ -69,7 +69,7 @@ const App = () => {
     themeBtnInactive: { background: 'transparent', color: currentTheme.textSecondary },
     hamburger: { display: isMobile ? 'flex' : 'none', flexDirection: 'column', cursor: 'pointer', gap: '4px' },
     hamburgerLine: { width: '24px', height: '2px', background: currentTheme.text, transition: 'all 0.3s' },
-    mobileMenu: { position: 'absolute', top: '100%', left: 0, right: 0, background: currentTheme.bg, borderBottom: `1px solid ${currentTheme.border}`, padding: '20px', display: isMobileMenuOpen && isMobile ? 'flex' : 'none', flexDirection: 'column', gap: '15px' },
+    mobileMenu: { position: 'absolute', top: '100%', left: 0, right: 0, background: `${currentTheme.bg}F5`, backdropFilter: 'blur(10px)', borderBottom: `1px solid ${currentTheme.border}`, padding: '20px', display: isMobileMenuOpen && isMobile ? 'flex' : 'none', flexDirection: 'column', gap: '15px' },
     fadeIn: { animation: 'fadeInUp 0.8s ease-out', opacity: 1 },
     fadeInDelay: { animation: 'fadeInUp 0.8s ease-out 0.2s both', opacity: 0 },
     fadeInDelayLong: { animation: 'fadeInUp 0.8s ease-out 0.4s both', opacity: 0 },
