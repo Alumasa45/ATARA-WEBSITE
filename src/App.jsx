@@ -54,10 +54,10 @@ const App = () => {
   }, []);
 
   const styles = {
-    app: { minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', background: currentTheme.bg, color: currentTheme.text, transition: 'all 0.3s ease', position: 'relative' },
+    app: { minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', color: currentTheme.text, transition: 'all 0.3s ease', position: 'relative' },
     backgroundSlider: { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: -2 },
     backgroundImage: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity 2s ease-in-out' },
-    glassOverlay: { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: `${currentTheme.bg}20`, backdropFilter: 'blur(2px)', zIndex: -1 },
+    glassOverlay: { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: `${currentTheme.bg}60`, backdropFilter: 'blur(8px)', zIndex: -1 },
     nav: { position: 'fixed', top: 0, width: '100%', background: `${currentTheme.bg}F0`, backdropFilter: 'blur(10px)', borderBottom: `1px solid ${currentTheme.border}`, padding: isMobile ? '15px 20px' : '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 },
     navBrand: { fontWeight: 600, fontSize: '18px', letterSpacing: '2px', color: currentTheme.text },
     navLinks: { display: isMobile ? 'none' : 'flex', gap: '40px' },
