@@ -233,7 +233,8 @@
                     zIndex: 1
                 },
                 nav: { position: 'fixed', top: 0, width: '100%', background: isDarkTheme ? 'rgba(20, 20, 20, 0.95)' : 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', borderBottom: isDarkTheme ? '1px solid rgba(60, 60, 60, 0.5)' : '1px solid rgba(240, 240, 240, 0.5)', padding: window.innerWidth <= 768 ? '15px 20px' : '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100, boxSizing: 'border-box' },
-                navBrand: { fontWeight: 600, fontSize: window.innerWidth <= 768 ? '16px' : '18px', letterSpacing: '2px', animation: 'slideDown 0.8s ease-out', color: isDarkTheme ? '#fff' : '#000' },
+                navBrand: { fontWeight: 600, fontSize: window.innerWidth <= 768 ? '16px' : '18px', letterSpacing: '2px', animation: 'slideDown 0.8s ease-out', color: isDarkTheme ? '#fff' : '#000', display: 'flex', alignItems: 'center', gap: '10px' },
+                logo: { height: window.innerWidth <= 768 ? '24px' : '28px', width: 'auto' },
                 navLinks: { display: window.innerWidth <= 768 ? 'none' : 'flex', gap: '30px', flexWrap: 'wrap', alignItems: 'center' },
                 navLink: { background: 'none', border: 'none', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit', textTransform: 'capitalize' },
                 hamburger: { display: window.innerWidth <= 768 ? 'flex' : 'none', background: 'none', border: 'none', cursor: 'pointer', padding: '5px', gap: '10px', alignItems: 'center' },
@@ -770,7 +771,14 @@
                     React.createElement('div', { style: styles.overlay })
                 ),
                 React.createElement('nav', { style: styles.nav },
-                    React.createElement('div', { style: styles.navBrand }, 'ATARA STUDIOS'),
+                    React.createElement('div', { style: styles.navBrand },
+                        React.createElement('img', { 
+                            src: './logo.png',
+                            alt: 'Atara Studios Logo',
+                            style: styles.logo
+                        }),
+                        'ATARA STUDIOS'
+                    ),
                     React.createElement('div', { style: styles.navLinks },
                         ['home', 'classes', 'about', 'pricing', 'contact'].map(section =>
                             React.createElement('button', {
