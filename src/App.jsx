@@ -573,9 +573,9 @@ const App = () => {
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '40px' : '80px', marginTop: '40px', ...styles.fadeInDelay }}>
             <div>
               <h3 style={{ fontSize: '18px', fontWeight: 500, marginBottom: '15px' }}>Visit Us</h3>
-              <p style={{ color: currentTheme.textSecondary, marginBottom: '20px' }}>123 Wellness Avenue<br />Downtown District</p>
+              <p style={{ color: currentTheme.textSecondary, marginBottom: '20px' }}>One Stop Arcade<br />Karen, 2nd Floor</p>
               <h4 style={{ fontSize: '18px', fontWeight: 500, marginBottom: '15px', marginTop: '30px', color: currentTheme.text }}>Hours</h4>
-              <p style={{ color: currentTheme.textSecondary }}>Monday - Sunday<br />7:00 AM - 7:00 PM</p>
+              <p style={{ color: currentTheme.textSecondary }}>Monday - Saturday<br />7:00 AM - 7:00 PM</p>
             </div>
             <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }} onSubmit={e => e.preventDefault()}>
               <input type="text" placeholder="Name" required style={{ padding: '16px', border: `1px solid ${currentTheme.border}`, fontSize: '14px', fontFamily: 'inherit', background: currentTheme.bg, color: currentTheme.text }} />
