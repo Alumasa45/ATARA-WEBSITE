@@ -7,6 +7,7 @@ const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [expandedCard, setExpandedCard] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -97,8 +98,9 @@ const App = () => {
     ctaBtn: { background: currentTheme.text, color: currentTheme.bg, border: 'none', padding: '16px 32px', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit' },
     imagePlaceholder: { aspectRatio: '4/5', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, borderRadius: '12px' },
     grid: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))', gap: isMobile ? '30px' : '40px', marginTop: isMobile ? '40px' : '60px' },
-    classCard: { textAlign: 'center' },
-    classImage: { aspectRatio: '4/3', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, marginBottom: '20px', borderRadius: '12px', width: '100%' },
+    classCard: { textAlign: 'center', background: `${currentTheme.bg}E6`, backdropFilter: 'blur(10px)', borderRadius: '20px', border: `1px solid ${currentTheme.border}`, padding: '20px', cursor: 'pointer', transition: 'all 0.3s ease', transform: 'scale(1)' },
+    classCardExpanded: { transform: 'scale(1.02)', boxShadow: `0 8px 32px ${currentTheme.border}` },
+    classImage: { aspectRatio: '4/3', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, marginBottom: '20px', borderRadius: '16px', width: '100%' },
     h2: { fontSize: '32px', fontWeight: 300, textAlign: 'center' },
     h3: { fontSize: '20px', fontWeight: 500, marginBottom: '10px' },
     cardP: { color: currentTheme.textSecondary, fontSize: '14px' }
@@ -186,10 +188,38 @@ const App = () => {
           <h2 style={{ ...styles.h2, ...styles.fadeIn }}>Classes</h2>
           <div style={{ ...styles.grid, ...styles.fadeInDelay }}>
             {[
-              { name: 'Pilates Reformer', desc: 'Dynamic full-body workout using specialized equipment' },
-              { name: 'Mat Pilates', desc: 'Core-focused floor exercises for strength and flexibility' },
-              { name: 'Dance', desc: 'Expressive movement combining technique and creativity' },
-              { name: 'Strength Training', desc: 'Functional fitness for everyday movement and power' }
+              { 
+                name: 'Pilates Reformer', 
+                desc: 'Dynamic full-body workout using specialized equipment',
+                details: 'Experience the transformative power of reformer Pilates. Our state-of-the-art equipment provides resistance and support for a full-body workout that builds strength, flexibility, and balance.',
+                duration: '55 minutes',
+                level: 'All levels',
+                price: 'KSh 2,000'
+              },
+              { 
+                name: 'Mat Pilates', 
+                desc: 'Core-focused floor exercises for strength and flexibility',
+                details: 'Build core strength and improve posture with our mat Pilates classes. Using your body weight and small props, these sessions focus on controlled movements and proper alignment.',
+                duration: '45 minutes',
+                level: 'Beginner to Intermediate',
+                price: 'KSh 2,000'
+              },
+              { 
+                name: 'Dance', 
+                desc: 'Expressive movement combining technique and creativity',
+                details: 'Let your creativity flow in our dance classes. Combining various styles and techniques, these sessions improve coordination, rhythm, and self-expression while providing a great cardio workout.',
+                duration: '60 minutes',
+                level: 'All levels',
+                price: 'KSh 1,500'
+              },
+              { 
+                name: 'Yoga', 
+                desc: 'Functional fitness for everyday movement and power',
+                details: 'Build functional strength with our targeted training sessions. Focus on compound movements and proper form to enhance your daily activities and overall fitness performance.',
+                duration: '50 minutes',
+                level: 'Intermediate to Advanced',
+                price: 'KSh 2,500'
+              }
             ].map((cls, index) => {
               const classImages = [
                 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop',
@@ -197,15 +227,59 @@ const App = () => {
                 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop',
                 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=400&h=300&fit=crop'
               ];
+              const isExpanded = expandedCard === index;
               return (
-                <div key={cls.name} style={styles.classCard}>
+                <div 
+                  key={cls.name} 
+                  style={{ 
+                    ...styles.classCard, 
+                    ...(isExpanded ? styles.classCardExpanded : {})
+                  }}
+                  onClick={() => setExpandedCard(isExpanded ? null : index)}
+                >
                   <img 
                     src={classImages[index]} 
                     alt={cls.name} 
-                    style={{ ...styles.classImage, objectFit: 'cover', borderRadius: '12px' }}
+                    style={{ ...styles.classImage, objectFit: 'cover', borderRadius: '16px' }}
                   />
                   <h3 style={styles.h3}>{cls.name}</h3>
                   <p style={styles.cardP}>{cls.desc}</p>
+                  
+                  {isExpanded && (
+                    <div style={{ marginTop: '20px', textAlign: 'left' }}>
+                      <p style={{ color: currentTheme.text, fontSize: '14px', lineHeight: 1.6, marginBottom: '15px' }}>
+                        {cls.details}
+                      </p>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '20px' }}>
+                        <div>
+                          <strong style={{ color: currentTheme.text, fontSize: '12px' }}>Duration</strong>
+                          <p style={{ color: currentTheme.textSecondary, fontSize: '12px', margin: '2px 0' }}>{cls.duration}</p>
+                        </div>
+                        <div>
+                          <strong style={{ color: currentTheme.text, fontSize: '12px' }}>Level</strong>
+                          <p style={{ color: currentTheme.textSecondary, fontSize: '12px', margin: '2px 0' }}>{cls.level}</p>
+                        </div>
+                        <div>
+                          <strong style={{ color: currentTheme.text, fontSize: '12px' }}>Price</strong>
+                          <p style={{ color: currentTheme.textSecondary, fontSize: '12px', margin: '2px 0' }}>{cls.price}</p>
+                        </div>
+                      </div>
+                      <button 
+                        style={{ 
+                          ...styles.ctaBtn, 
+                          width: '100%', 
+                          borderRadius: '12px',
+                          marginTop: '10px'
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveSection('contact');
+                        }}
+                      >
+                        Book Now
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })}
