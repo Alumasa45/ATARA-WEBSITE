@@ -117,12 +117,17 @@ const App = () => {
               </button>
             </div>
             <img 
-              src="https://images.unsplash.com/photo-1506629905607-d405d7d3b0d2?w=500&h=600&fit=crop&auto=format" 
+              src="https://images.unsplash.com/photo-1506629905607-d405d7d3b0d2?ixlib=rb-4.0.3&w=500&h=600&fit=crop&auto=format&q=80" 
               alt="Peaceful yoga session with natural lighting" 
               style={{ aspectRatio: '4/5', objectFit: 'cover', borderRadius: '12px', width: '100%', height: 'auto', display: 'block' }}
               onError={(e) => {
-                e.target.src = 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&h=600&fit=crop&auto=format';
+                console.log('Primary image failed, loading fallback');
+                e.target.src = 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&w=500&h=600&fit=crop&auto=format&q=80';
+                e.target.onerror = () => {
+                  e.target.style.display = 'none';
+                };
               }}
+              loading="lazy"
             />
           </div>
 
