@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SnowflakeCursor from './SnowflakeCursor';
+import { Heart, Users, Zap, Star, Clock, MapPin } from 'lucide-react';
 
 const App = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -37,9 +38,27 @@ const App = () => {
 
   const currentTheme = isDarkTheme ? theme.dark : theme.light;
 
+  const backgroundImages = [
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=1080&fit=crop',
+    'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1920&h=1080&fit=crop',
+    'https://images.unsplash.com/photo-1506629905607-d405d7d3b0d2?w=1920&h=1080&fit=crop'
+  ];
+
+  const [currentBgIndex, setCurrentBgIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBgIndex((prev) => (prev + 1) % backgroundImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   const styles = {
-    app: { minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', background: currentTheme.bg, color: currentTheme.text, transition: 'all 0.3s ease' },
-    nav: { position: 'fixed', top: 0, width: '100%', background: currentTheme.bg, borderBottom: `1px solid ${currentTheme.border}`, padding: '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 },
+    app: { minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', background: currentTheme.bg, color: currentTheme.text, transition: 'all 0.3s ease', position: 'relative' },
+    backgroundSlider: { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: -2 },
+    backgroundImage: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity 3s ease-in-out' },
+    glassOverlay: { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: `${currentTheme.bg}CC`, backdropFilter: 'blur(1px)', zIndex: -1 },
+    nav: { position: 'fixed', top: 0, width: '100%', background: `${currentTheme.bg}F0`, backdropFilter: 'blur(10px)', borderBottom: `1px solid ${currentTheme.border}`, padding: isMobile ? '15px 20px' : '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 },
     navBrand: { fontWeight: 600, fontSize: '18px', letterSpacing: '2px', color: currentTheme.text },
     navLinks: { display: isMobile ? 'none' : 'flex', gap: '40px' },
     navLink: { background: 'none', border: 'none', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit', textTransform: 'capitalize', color: currentTheme.textSecondary },
@@ -51,20 +70,30 @@ const App = () => {
     hamburger: { display: isMobile ? 'flex' : 'none', flexDirection: 'column', cursor: 'pointer', gap: '4px' },
     hamburgerLine: { width: '24px', height: '2px', background: currentTheme.text, transition: 'all 0.3s' },
     mobileMenu: { position: 'absolute', top: '100%', left: 0, right: 0, background: currentTheme.bg, borderBottom: `1px solid ${currentTheme.border}`, padding: '20px', display: isMobileMenuOpen && isMobile ? 'flex' : 'none', flexDirection: 'column', gap: '15px' },
-    fadeIn: { animation: 'fadeInUp 0.8s ease-out' },
-    fadeInDelay: { animation: 'fadeInUp 0.8s ease-out 0.2s both' },
-    fadeInDelayLong: { animation: 'fadeInUp 0.8s ease-out 0.4s both' },
+    fadeIn: { animation: 'fadeInUp 0.8s ease-out', opacity: 1 },
+    fadeInDelay: { animation: 'fadeInUp 0.8s ease-out 0.2s both', opacity: 0 },
+    fadeInDelayLong: { animation: 'fadeInUp 0.8s ease-out 0.4s both', opacity: 0 },
+    servicesSection: { padding: isMobile ? '60px 20px' : '80px 40px', maxWidth: '1200px', margin: '0 auto' },
+    servicesGrid: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: isMobile ? '40px' : '60px', marginTop: '60px' },
+    serviceCard: { textAlign: 'center', padding: '30px 20px', background: `${currentTheme.bg}E6`, backdropFilter: 'blur(10px)', borderRadius: '16px', border: `1px solid ${currentTheme.border}` },
+    serviceIcon: { width: '48px', height: '48px', margin: '0 auto 20px', color: currentTheme.text },
+    serviceTitle: { fontSize: '24px', fontWeight: 600, marginBottom: '15px', color: currentTheme.text },
+    serviceDesc: { fontSize: '16px', color: currentTheme.textSecondary, lineHeight: 1.6 },
+    statsSection: { display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: '30px', marginTop: '60px' },
+    statCard: { textAlign: 'center', padding: '20px', background: `${currentTheme.bg}CC`, borderRadius: '12px', border: `1px solid ${currentTheme.border}` },
+    statNumber: { fontSize: '32px', fontWeight: 700, color: currentTheme.text, marginBottom: '5px' },
+    statLabel: { fontSize: '14px', color: currentTheme.textSecondary },
     section: { minHeight: '100vh', paddingTop: '80px' },
     sectionHome: { paddingTop: 0 },
-    container: { maxWidth: '1200px', marginLeft: 'auto', marginRight: 'auto', padding: '60px 40px' },
-    hero: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center', minHeight: '100vh', padding: '0 40px', maxWidth: '1200px', margin: '0 auto' },
-    heroH1: { fontSize: '48px', fontWeight: 300, marginBottom: '20px', lineHeight: 1.2 },
+    container: { maxWidth: '1200px', marginLeft: 'auto', marginRight: 'auto', padding: isMobile ? '40px 20px' : '60px 40px' },
+    hero: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '40px' : '80px', alignItems: 'center', minHeight: '100vh', padding: isMobile ? '0 20px' : '0 40px', maxWidth: '1200px', margin: '0 auto', textAlign: isMobile ? 'center' : 'left' },
+    heroH1: { fontSize: isMobile ? '36px' : '48px', fontWeight: 300, marginBottom: '20px', lineHeight: 1.2 },
     heroP: { fontSize: '18px', color: currentTheme.textSecondary, marginBottom: '40px' },
     ctaBtn: { background: currentTheme.text, color: currentTheme.bg, border: 'none', padding: '16px 32px', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit' },
-    imagePlaceholder: { aspectRatio: '4/5', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}` },
-    grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '40px', marginTop: '60px' },
+    imagePlaceholder: { aspectRatio: '4/5', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, borderRadius: '12px' },
+    grid: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))', gap: isMobile ? '30px' : '40px', marginTop: isMobile ? '40px' : '60px' },
     classCard: { textAlign: 'center' },
-    classImage: { aspectRatio: '4/3', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, marginBottom: '20px' },
+    classImage: { aspectRatio: '4/3', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, marginBottom: '20px', borderRadius: '12px', width: '100%' },
     h2: { fontSize: '32px', fontWeight: 300, textAlign: 'center' },
     h3: { fontSize: '20px', fontWeight: 500, marginBottom: '10px' },
     cardP: { color: currentTheme.textSecondary, fontSize: '14px' }
@@ -73,20 +102,76 @@ const App = () => {
   const renderContent = () => {
     if (activeSection === 'home') {
       return (
-        <div style={styles.hero}>
-          <div style={styles.fadeIn}>
-            <h1 style={styles.heroH1}>Movement. Strength. Balance.</h1>
-            <p style={styles.heroP}>Premium Pilates, Dance & Strength Training</p>
-            <button style={styles.ctaBtn} onClick={() => setActiveSection('contact')}>
-              Book a Class
-            </button>
+        <>
+          <div style={styles.hero}>
+            <div style={styles.fadeIn}>
+              <h1 style={styles.heroH1}>Movement. Strength. Balance.</h1>
+              <p style={styles.heroP}>Premium Pilates, Dance & Strength Training</p>
+              <button style={styles.ctaBtn} onClick={() => setActiveSection('contact')}>
+                Book a Class
+              </button>
+            </div>
+            <img 
+              src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=500&fit=crop&crop=face" 
+              alt="Black woman in elegant Pilates pose" 
+              style={{ ...styles.imagePlaceholder, ...styles.fadeInDelay, objectFit: 'cover', borderRadius: '12px', width: '100%' }}
+            />
           </div>
-          <img 
-            src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=500&fit=crop&crop=face" 
-            alt="Black woman in elegant Pilates pose" 
-            style={{ ...styles.imagePlaceholder, ...styles.fadeInDelay, objectFit: 'cover' }}
-          />
-        </div>
+
+          <div style={styles.servicesSection}>
+            <div style={styles.fadeInDelay}>
+              <h2 style={{ ...styles.h2, marginBottom: '20px' }}>Transform Your Body & Mind</h2>
+              <p style={{ textAlign: 'center', fontSize: '18px', color: currentTheme.textSecondary, maxWidth: '600px', margin: '0 auto' }}>
+                At Atara Studios, we offer personalized wellness experiences that blend traditional techniques with modern innovation.
+              </p>
+            </div>
+
+            <div style={{ ...styles.servicesGrid, ...styles.fadeInDelayLong }}>
+              <div style={styles.serviceCard}>
+                <Heart style={styles.serviceIcon} />
+                <h3 style={styles.serviceTitle}>Pilates</h3>
+                <p style={styles.serviceDesc}>
+                  Strengthen your core, improve posture, and enhance flexibility through precise, controlled movements on our state-of-the-art reformer equipment.
+                </p>
+              </div>
+              
+              <div style={styles.serviceCard}>
+                <Users style={styles.serviceIcon} />
+                <h3 style={styles.serviceTitle}>Yoga</h3>
+                <p style={styles.serviceDesc}>
+                  Find inner peace and physical strength through mindful movement, breathwork, and meditation in our serene studio environment.
+                </p>
+              </div>
+              
+              <div style={styles.serviceCard}>
+                <Zap style={styles.serviceIcon} />
+                <h3 style={styles.serviceTitle}>Dance</h3>
+                <p style={styles.serviceDesc}>
+                  Express yourself through dynamic movement, build confidence, and improve coordination with our expert dance instructors.
+                </p>
+              </div>
+            </div>
+
+            <div style={{ ...styles.statsSection, ...styles.fadeInDelayLong }}>
+              <div style={styles.statCard}>
+                <div style={styles.statNumber}>500+</div>
+                <div style={styles.statLabel}>Happy Clients</div>
+              </div>
+              <div style={styles.statCard}>
+                <div style={styles.statNumber}>5</div>
+                <div style={styles.statLabel}>Expert Trainers</div>
+              </div>
+              <div style={styles.statCard}>
+                <div style={styles.statNumber}>3</div>
+                <div style={styles.statLabel}>Specialized Programs</div>
+              </div>
+              <div style={styles.statCard}>
+                <div style={styles.statNumber}>2+</div>
+                <div style={styles.statLabel}>Years Experience</div>
+              </div>
+            </div>
+          </div>
+        </>
       );
     }
 
@@ -112,7 +197,7 @@ const App = () => {
                   <img 
                     src={classImages[index]} 
                     alt={cls.name} 
-                    style={{ ...styles.classImage, objectFit: 'cover' }}
+                    style={{ ...styles.classImage, objectFit: 'cover', borderRadius: '12px' }}
                   />
                   <h3 style={styles.h3}>{cls.name}</h3>
                   <p style={styles.cardP}>{cls.desc}</p>
@@ -128,12 +213,12 @@ const App = () => {
       return (
         <div style={styles.container}>
           <h2 style={{ ...styles.h2, ...styles.fadeIn }}>About</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', marginTop: '40px', ...styles.fadeInDelay }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '40px' : '80px', marginTop: '40px', ...styles.fadeInDelay }}>
             <div>
               <h3 style={{ fontSize: '24px', fontWeight: 500, marginBottom: '20px' }}>Our Philosophy</h3>
               <p>At Atara Studios, we believe movement is medicine. Our carefully curated classes blend traditional techniques with modern approaches to create transformative experiences for body and mind.</p>
             </div>
-            <div style={{ display: 'grid', gap: '40px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: isMobile ? '20px' : '40px' }}>
               {[
                 { name: 'Melody', role: 'Lead Pilates & Yoga Instructor' },
                 { name: 'Victryn', role: 'Intro Pilates sessions' },
@@ -153,7 +238,7 @@ const App = () => {
                     <img 
                       src={trainerImages[index]} 
                       alt={trainer.name} 
-                      style={{ width: '120px', height: '120px', borderRadius: '50%', margin: '0 auto 15px', objectFit: 'cover', border: `1px solid ${currentTheme.border}` }}
+                      style={{ width: isMobile ? '100px' : '120px', height: isMobile ? '100px' : '120px', borderRadius: '50%', margin: '0 auto 15px', objectFit: 'cover', border: `1px solid ${currentTheme.border}` }}
                     />
                     <h4 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '5px', color: currentTheme.text }}>{trainer.name}</h4>
                     <p style={{ color: currentTheme.textSecondary, fontSize: '14px' }}>{trainer.role}</p>
@@ -342,7 +427,7 @@ const App = () => {
       return (
         <div style={styles.container}>
           <h2 style={{ ...styles.h2, ...styles.fadeIn }}>Contact</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', marginTop: '40px', ...styles.fadeInDelay }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '40px' : '80px', marginTop: '40px', ...styles.fadeInDelay }}>
             <div>
               <h3 style={{ fontSize: '18px', fontWeight: 500, marginBottom: '15px' }}>Visit Us</h3>
               <p style={{ color: currentTheme.textSecondary, marginBottom: '20px' }}>123 Wellness Avenue<br />Downtown District</p>
@@ -363,6 +448,20 @@ const App = () => {
 
   return (
     <div style={styles.app}>
+      <div style={styles.backgroundSlider}>
+        {backgroundImages.map((img, index) => (
+          <img
+            key={index}
+            src={img}
+            alt="Background"
+            style={{
+              ...styles.backgroundImage,
+              opacity: index === currentBgIndex ? 0.4 : 0
+            }}
+          />
+        ))}
+      </div>
+      <div style={styles.glassOverlay}></div>
       <SnowflakeCursor />
       <nav style={styles.nav}>
         <div style={styles.navBrand}>ATARA STUDIOS</div>
