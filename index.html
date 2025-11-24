@@ -85,31 +85,44 @@
                     canvas.height = window.innerHeight;
                 };
 
-                const createEmojiImages = () => {
-                    context.font = '12px serif';
-                    context.textBaseline = 'middle';
-                    context.textAlign = 'center';
+                const createSnowflakeImages = () => {
+                    const bgCanvas = document.createElement('canvas');
+                    const bgContext = bgCanvas.getContext('2d');
+                    if (!bgContext) return;
 
-                    possibleEmoji.forEach((emoji) => {
-                        const measurements = context.measureText(emoji);
-                        const bgCanvas = document.createElement('canvas');
-                        const bgContext = bgCanvas.getContext('2d');
-                        if (!bgContext) return;
+                    bgCanvas.width = 20;
+                    bgCanvas.height = 20;
 
-                        bgCanvas.width = measurements.width;
-                        bgCanvas.height = measurements.actualBoundingBoxAscent * 2;
+                    const centerX = bgCanvas.width / 2;
+                    const centerY = bgCanvas.height / 2;
+                    const radius = 8;
 
-                        bgContext.textAlign = 'center';
-                        bgContext.font = '12px serif';
-                        bgContext.textBaseline = 'middle';
-                        bgContext.fillText(
-                            emoji,
-                            bgCanvas.width / 2,
-                            measurements.actualBoundingBoxAscent
-                        );
+                    // Create glowing white snowflake
+                    bgContext.shadowColor = 'white';
+                    bgContext.shadowBlur = 10;
+                    bgContext.fillStyle = 'white';
+                    
+                    // Draw snowflake shape
+                    bgContext.beginPath();
+                    for (let i = 0; i < 6; i++) {
+                        const angle = (i * Math.PI) / 3;
+                        const x1 = centerX + Math.cos(angle) * radius;
+                        const y1 = centerY + Math.sin(angle) * radius;
+                        const x2 = centerX + Math.cos(angle) * (radius * 0.5);
+                        const y2 = centerY + Math.sin(angle) * (radius * 0.5);
+                        
+                        bgContext.moveTo(centerX, centerY);
+                        bgContext.lineTo(x1, y1);
+                        bgContext.moveTo(x2, y2);
+                        bgContext.lineTo(x2 + Math.cos(angle + Math.PI/2) * 3, y2 + Math.sin(angle + Math.PI/2) * 3);
+                        bgContext.moveTo(x2, y2);
+                        bgContext.lineTo(x2 + Math.cos(angle - Math.PI/2) * 3, y2 + Math.sin(angle - Math.PI/2) * 3);
+                    }
+                    bgContext.strokeStyle = 'white';
+                    bgContext.lineWidth = 2;
+                    bgContext.stroke();
 
-                        canvImages.push(bgCanvas);
-                    });
+                    canvImages.push(bgCanvas);
                 };
 
                 const addParticle = (x, y) => {
@@ -141,7 +154,7 @@
 
                 const init = () => {
                     setCanvasSize();
-                    createEmojiImages();
+                    createSnowflakeImages();
                     document.addEventListener('mousemove', onMouseMove);
                     window.addEventListener('resize', setCanvasSize);
                     animationLoop();
