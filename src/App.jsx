@@ -117,9 +117,12 @@ const App = () => {
               </button>
             </div>
             <img 
-              src="https://images.unsplash.com/photo-1506629905607-d405d7d3b0d2?w=500&h=600&fit=crop" 
+              src="https://images.unsplash.com/photo-1506629905607-d405d7d3b0d2?w=500&h=600&fit=crop&auto=format" 
               alt="Peaceful yoga session with natural lighting" 
-              style={{ ...styles.imagePlaceholder, objectFit: 'cover', borderRadius: '12px', width: '100%', height: 'auto' }}
+              style={{ aspectRatio: '4/5', objectFit: 'cover', borderRadius: '12px', width: '100%', height: 'auto', display: 'block' }}
+              onError={(e) => {
+                e.target.src = 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&h=600&fit=crop&auto=format';
+              }}
             />
           </div>
 
