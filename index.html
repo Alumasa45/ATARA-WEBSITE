@@ -772,18 +772,15 @@
                 ),
                 React.createElement('nav', { style: styles.nav },
                     React.createElement('div', { style: styles.navBrand },
-                        React.createElement('svg', { 
-                            width: window.innerWidth <= 768 ? '28' : '32',
-                            height: window.innerWidth <= 768 ? '28' : '32',
-                            viewBox: '0 0 300 300',
-                            fill: isDarkTheme ? '#fff' : '#000'
-                        },
-                            React.createElement('path', { d: 'M110 37L75 200C65 240 85 270 125 270C140 270 155 265 165 255L180 290L220 290L150 150L180 37L110 37Z' }),
-                            React.createElement('path', { d: 'M75 200L165 255C175 250 180 240 180 230L180 150L75 200Z' }),
-                            React.createElement('rect', { x: '110', y: '150', width: '8', height: '120' }),
-                            React.createElement('rect', { x: '130', y: '150', width: '50', height: '8' }),
-                            React.createElement('path', { d: 'M130 158L180 158C190 158 200 168 200 178C200 188 190 198 180 198L130 198L130 158Z' })
-                        ),
+                        React.createElement('img', { 
+                            src: 'f28872d8-37c6-4241-a6c9-adfd2b2f10bc.svg',
+                            alt: 'Atara Studios Logo',
+                            style: { 
+                                height: window.innerWidth <= 768 ? '28px' : '32px', 
+                                width: 'auto',
+                                filter: isDarkTheme ? 'invert(1)' : 'none'
+                            }
+                        }),
                         'ATARA STUDIOS'
                     ),
                     React.createElement('div', { style: styles.navLinks },
