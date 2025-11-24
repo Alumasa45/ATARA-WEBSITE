@@ -100,7 +100,8 @@ const App = () => {
     grid: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))', gap: isMobile ? '30px' : '40px', marginTop: isMobile ? '40px' : '60px' },
     classCard: { textAlign: 'center', background: `${currentTheme.bg}E6`, backdropFilter: 'blur(10px)', borderRadius: '20px', border: `1px solid ${currentTheme.border}`, padding: '20px', cursor: 'pointer', transition: 'all 0.3s ease' },
     classCardHover: { transform: 'translateY(-5px)', boxShadow: `0 8px 32px ${currentTheme.border}` },
-    expandedDetails: { background: `${currentTheme.bg}F0`, backdropFilter: 'blur(15px)', borderRadius: '20px', border: `1px solid ${currentTheme.border}`, padding: '30px', marginTop: '20px', animation: 'fadeInUp 0.3s ease-out' },
+    modalOverlay: { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' },
+    modalCard: { background: `${currentTheme.bg}F5`, backdropFilter: 'blur(20px)', borderRadius: '24px', border: `1px solid ${currentTheme.border}`, padding: '40px', maxWidth: '500px', width: '100%', maxHeight: '80vh', overflowY: 'auto', animation: 'fadeInUp 0.4s ease-out', boxShadow: `0 20px 60px rgba(0,0,0,0.3)` },
     classImage: { aspectRatio: '4/3', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, marginBottom: '20px', borderRadius: '16px', width: '100%' },
     h2: { fontSize: '32px', fontWeight: 300, textAlign: 'center' },
     h3: { fontSize: '20px', fontWeight: 500, marginBottom: '10px' },
@@ -230,38 +231,82 @@ const App = () => {
               ];
               const isExpanded = expandedCard === index;
               return (
-                <React.Fragment key={cls.name}>
-                  <div 
-                    style={styles.classCard}
-                    onClick={() => setExpandedCard(isExpanded ? null : index)}
-                  >
-                    <img 
-                      src={classImages[index]} 
-                      alt={cls.name} 
-                      style={{ ...styles.classImage, objectFit: 'cover', borderRadius: '16px' }}
-                    />
-                    <h3 style={styles.h3}>{cls.name}</h3>
-                    <p style={styles.cardP}>{cls.desc}</p>
-                  </div>
+                <div 
+                  key={cls.name}
+                  style={styles.classCard}
+                  onClick={() => setExpandedCard(index)}
+                >
+                  <img 
+                    src={classImages[index]} 
+                    alt={cls.name} 
+                    style={{ ...styles.classImage, objectFit: 'cover', borderRadius: '16px' }}
+                  />
+                  <h3 style={styles.h3}>{cls.name}</h3>
+                  <p style={styles.cardP}>{cls.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+          
+          {expandedCard !== null && (
+            <div 
+              style={styles.modalOverlay}
+              onClick={() => setExpandedCard(null)}
+            >
+              <div 
+                style={styles.modalCard}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {(() => {
+                  const selectedClass = [
+                    { 
+                      name: 'Pilates Reformer', 
+                      details: 'Experience the transformative power of reformer Pilates. Our state-of-the-art equipment provides resistance and support for a full-body workout that builds strength, flexibility, and balance.',
+                      duration: '55 minutes',
+                      level: 'All levels',
+                      price: 'KSh 3,000'
+                    },
+                    { 
+                      name: 'Mat Pilates', 
+                      details: 'Build core strength and improve posture with our mat Pilates classes. Using your body weight and small props, these sessions focus on controlled movements and proper alignment.',
+                      duration: '45 minutes',
+                      level: 'Beginner to Intermediate',
+                      price: 'KSh 2,000'
+                    },
+                    { 
+                      name: 'Dance', 
+                      details: 'Let your creativity flow in our dance classes. Combining various styles and techniques, these sessions improve coordination, rhythm, and self-expression while providing a great cardio workout.',
+                      duration: '60 minutes',
+                      level: 'All levels',
+                      price: 'KSh 1,500'
+                    },
+                    { 
+                      name: 'Strength Training', 
+                      details: 'Build functional strength with our targeted training sessions. Focus on compound movements and proper form to enhance your daily activities and overall fitness performance.',
+                      duration: '50 minutes',
+                      level: 'Intermediate to Advanced',
+                      price: 'KSh 2,500'
+                    }
+                  ][expandedCard];
                   
-                  {isExpanded && (
-                    <div style={{ ...styles.expandedDetails, gridColumn: isMobile ? '1' : 'span 2' }}>
-                      <h3 style={{ ...styles.h3, marginBottom: '15px', textAlign: 'left' }}>{cls.name} Details</h3>
-                      <p style={{ color: currentTheme.text, fontSize: '16px', lineHeight: 1.6, marginBottom: '20px' }}>
-                        {cls.details}
+                  return (
+                    <>
+                      <h2 style={{ fontSize: '28px', marginBottom: '20px', textAlign: 'center', color: currentTheme.text }}>{selectedClass.name}</h2>
+                      <p style={{ color: currentTheme.text, fontSize: '16px', lineHeight: 1.6, marginBottom: '30px', textAlign: 'center' }}>
+                        {selectedClass.details}
                       </p>
-                      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: '20px', marginBottom: '25px' }}>
-                        <div style={{ textAlign: 'center', padding: '15px', background: `${currentTheme.bg}CC`, borderRadius: '12px' }}>
-                          <strong style={{ color: currentTheme.text, fontSize: '14px', display: 'block', marginBottom: '5px' }}>Duration</strong>
-                          <p style={{ color: currentTheme.textSecondary, fontSize: '16px', margin: 0 }}>{cls.duration}</p>
+                      <div style={{ display: 'grid', gap: '15px', marginBottom: '30px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px', background: `${currentTheme.bg}CC`, borderRadius: '12px' }}>
+                          <strong style={{ color: currentTheme.text }}>Duration:</strong>
+                          <span style={{ color: currentTheme.textSecondary }}>{selectedClass.duration}</span>
                         </div>
-                        <div style={{ textAlign: 'center', padding: '15px', background: `${currentTheme.bg}CC`, borderRadius: '12px' }}>
-                          <strong style={{ color: currentTheme.text, fontSize: '14px', display: 'block', marginBottom: '5px' }}>Level</strong>
-                          <p style={{ color: currentTheme.textSecondary, fontSize: '16px', margin: 0 }}>{cls.level}</p>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px', background: `${currentTheme.bg}CC`, borderRadius: '12px' }}>
+                          <strong style={{ color: currentTheme.text }}>Level:</strong>
+                          <span style={{ color: currentTheme.textSecondary }}>{selectedClass.level}</span>
                         </div>
-                        <div style={{ textAlign: 'center', padding: '15px', background: `${currentTheme.bg}CC`, borderRadius: '12px' }}>
-                          <strong style={{ color: currentTheme.text, fontSize: '14px', display: 'block', marginBottom: '5px' }}>Price</strong>
-                          <p style={{ color: currentTheme.textSecondary, fontSize: '18px', fontWeight: 600, margin: 0 }}>{cls.price}</p>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px', background: `${currentTheme.bg}CC`, borderRadius: '12px' }}>
+                          <strong style={{ color: currentTheme.text }}>Price:</strong>
+                          <span style={{ color: currentTheme.text, fontSize: '18px', fontWeight: 600 }}>{selectedClass.price}</span>
                         </div>
                       </div>
                       <button 
@@ -270,18 +315,39 @@ const App = () => {
                           width: '100%', 
                           borderRadius: '12px',
                           padding: '16px',
-                          fontSize: '16px'
+                          fontSize: '16px',
+                          marginBottom: '15px'
                         }}
-                        onClick={() => setActiveSection('contact')}
+                        onClick={() => {
+                          setActiveSection('contact');
+                          setExpandedCard(null);
+                        }}
                       >
-                        Book Now - {cls.name}
+                        Book {selectedClass.name}
                       </button>
-                    </div>
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </div>
+                      <button 
+                        style={{ 
+                          background: 'transparent', 
+                          border: `1px solid ${currentTheme.border}`, 
+                          color: currentTheme.textSecondary,
+                          width: '100%', 
+                          borderRadius: '12px',
+                          padding: '12px',
+                          fontSize: '14px',
+                          cursor: 'pointer',
+                          fontFamily: 'inherit'
+                        }}
+                        onClick={() => setExpandedCard(null)}
+                      >
+                        Close
+                      </button>
+                    </>
+                  );
+                })()
+              }
+              </div>
+            </div>
+          )}
         </div>
       );
     }
