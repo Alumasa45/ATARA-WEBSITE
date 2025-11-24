@@ -117,15 +117,9 @@ const App = () => {
               </button>
             </div>
             <img 
-              src="https://source.unsplash.com/500x600/?yoga,pilates,woman" 
-              alt="Woman practicing yoga or pilates" 
+              src="/images/yoga-hero.svg" 
+              alt="Woman practicing yoga in tree pose" 
               style={{ aspectRatio: '4/5', objectFit: 'cover', borderRadius: '12px', width: '100%', height: 'auto', display: 'block' }}
-              onError={(e) => {
-                e.target.src = 'https://source.unsplash.com/500x600/?fitness,woman';
-                e.target.onerror = () => {
-                  e.target.src = 'https://via.placeholder.com/500x600/f8f8f8/666?text=Pilates+%26+Yoga';
-                };
-              }}
             />
           </div>
 
