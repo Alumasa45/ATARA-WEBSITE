@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SnowflakeCursor from './SnowflakeCursor';
-import { Heart, Users, Zap, Star, Clock, MapPin } from 'lucide-react';
+import { Heart, Users, Zap, Sun, Moon } from 'lucide-react';
 
 const App = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -484,13 +484,13 @@ const App = () => {
               style={!isDarkTheme ? { ...styles.themeBtn, ...styles.themeBtnActive } : { ...styles.themeBtn, ...styles.themeBtnInactive }}
               onClick={() => setIsDarkTheme(false)}
             >
-              Light
+              <Sun size={16} />
             </button>
             <button
               style={isDarkTheme ? { ...styles.themeBtn, ...styles.themeBtnActive } : { ...styles.themeBtn, ...styles.themeBtnInactive }}
               onClick={() => setIsDarkTheme(true)}
             >
-              Dark
+              <Moon size={16} />
             </button>
           </div>
 
