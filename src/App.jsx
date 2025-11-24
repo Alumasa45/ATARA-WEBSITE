@@ -81,9 +81,11 @@ const App = () => {
               Book a Class
             </button>
           </div>
-          <div style={{ ...styles.imagePlaceholder, ...styles.fadeInDelay, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', color: currentTheme.textSecondary, textAlign: 'center', padding: '20px' }}>
-            [AI Image: Black woman in elegant Pilates pose on reformer, serene studio lighting]
-          </div>
+          <img 
+            src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=500&fit=crop&crop=face" 
+            alt="Black woman in elegant Pilates pose" 
+            style={{ ...styles.imagePlaceholder, ...styles.fadeInDelay, objectFit: 'cover' }}
+          />
         </div>
       );
     }
@@ -99,17 +101,19 @@ const App = () => {
               { name: 'Dance', desc: 'Expressive movement combining technique and creativity' },
               { name: 'Strength Training', desc: 'Functional fitness for everyday movement and power' }
             ].map((cls, index) => {
-              const imageDescriptions = [
-                '[AI Image: Black instructor demonstrating Pilates reformer with focused expression]',
-                '[AI Image: Black woman in flowing mat Pilates pose, peaceful expression]',
-                '[AI Image: Black dancers in synchronized movement, joyful energy]',
-                '[AI Image: Black athlete doing strength training, determined and powerful]'
+              const classImages = [
+                'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop',
+                'https://images.unsplash.com/photo-1506629905607-d405d7d3b0d2?w=400&h=300&fit=crop',
+                'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop',
+                'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=400&h=300&fit=crop'
               ];
               return (
                 <div key={cls.name} style={styles.classCard}>
-                  <div style={{ ...styles.classImage, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', color: currentTheme.textSecondary, textAlign: 'center', padding: '15px' }}>
-                    {imageDescriptions[index]}
-                  </div>
+                  <img 
+                    src={classImages[index]} 
+                    alt={cls.name} 
+                    style={{ ...styles.classImage, objectFit: 'cover' }}
+                  />
                   <h3 style={styles.h3}>{cls.name}</h3>
                   <p style={styles.cardP}>{cls.desc}</p>
                 </div>
@@ -138,17 +142,19 @@ const App = () => {
                 { name: 'Joy', role: 'Dance Trainer' }
               ].map((trainer, index) => {
                 const trainerImages = [
-                  '[AI: Melody - Black woman, warm smile, yoga attire]',
-                  '[AI: Victryn - Black woman, welcoming pose]',
-                  '[AI: Pedro - Black man, dance instructor energy]',
-                  '[AI: Flex - Black man, dynamic dance pose]',
-                  '[AI: Joy - Black woman, bright smile, dance outfit]'
+                  'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=120&h=120&fit=crop&crop=face',
+                  'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=120&h=120&fit=crop&crop=face',
+                  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face',
+                  'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&h=120&fit=crop&crop=face',
+                  'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&h=120&fit=crop&crop=face'
                 ];
                 return (
                   <div key={trainer.name} style={{ textAlign: 'center' }}>
-                    <div style={{ width: '120px', height: '120px', background: currentTheme.cardBg, border: `1px solid ${currentTheme.border}`, borderRadius: '50%', margin: '0 auto 15px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '9px', color: currentTheme.textSecondary, textAlign: 'center', padding: '8px' }}>
-                      {trainerImages[index]}
-                    </div>
+                    <img 
+                      src={trainerImages[index]} 
+                      alt={trainer.name} 
+                      style={{ width: '120px', height: '120px', borderRadius: '50%', margin: '0 auto 15px', objectFit: 'cover', border: `1px solid ${currentTheme.border}` }}
+                    />
                     <h4 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '5px', color: currentTheme.text }}>{trainer.name}</h4>
                     <p style={{ color: currentTheme.textSecondary, fontSize: '14px' }}>{trainer.role}</p>
                   </div>
