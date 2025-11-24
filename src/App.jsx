@@ -117,11 +117,14 @@ const App = () => {
               </button>
             </div>
             <img 
-              src="https://picsum.photos/500/600?random=1" 
-              alt="Fitness and wellness studio" 
+              src="https://source.unsplash.com/500x600/?yoga,pilates,woman" 
+              alt="Woman practicing yoga or pilates" 
               style={{ aspectRatio: '4/5', objectFit: 'cover', borderRadius: '12px', width: '100%', height: 'auto', display: 'block' }}
               onError={(e) => {
-                e.target.src = 'https://via.placeholder.com/500x600/f0f0f0/666?text=Atara+Studios';
+                e.target.src = 'https://source.unsplash.com/500x600/?fitness,woman';
+                e.target.onerror = () => {
+                  e.target.src = 'https://via.placeholder.com/500x600/f8f8f8/666?text=Pilates+%26+Yoga';
+                };
               }}
             />
           </div>
